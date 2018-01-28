@@ -6,8 +6,9 @@ public class AppMgr : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		///...No effect, does ARKit plugin modify the frameRate at somewhere?
 		Application.targetFrameRate = 30;
-		QualitySettings.vSyncCount = 2;
+		QualitySettings.vSyncCount = 0;
 		
 	}
 	
