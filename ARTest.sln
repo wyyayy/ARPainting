@@ -1,0 +1,22 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2015
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ARTest", "ARTest.csproj", "{E18790A8-266C-8BD0-C0D0-3CF3F8A56049}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ARTest.Editor", "ARTest.Editor.csproj", "{750F963C-2289-A3F7-DDF0-FE60B570F380}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E18790A8-266C-8BD0-C0D0-3CF3F8A56049}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E18790A8-266C-8BD0-C0D0-3CF3F8A56049}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E18790A8-266C-8BD0-C0D0-3CF3F8A56049}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E18790A8-266C-8BD0-C0D0-3CF3F8A56049}.Release|Any CPU.Build.0 = Release|Any CPU
+		{750F963C-2289-A3F7-DDF0-FE60B570F380}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{750F963C-2289-A3F7-DDF0-FE60B570F380}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{750F963C-2289-A3F7-DDF0-FE60B570F380}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{750F963C-2289-A3F7-DDF0-FE60B570F380}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
