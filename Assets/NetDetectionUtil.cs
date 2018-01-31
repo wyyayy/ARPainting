@@ -75,7 +75,7 @@ public class NetDetectionUtil : MonoBehaviour
         {
             return;
         }
-        _receiver.BeginReceive(new AsyncCallback(_receiveData), null);
+        _receiver.BeginReceive(new AsyncCallback(_receiveData), null);  
         string receivedString = Encoding.ASCII.GetString(received);
         Debug.Log("Received from :" + receiveIPGroup.Address + ", Data: " + receivedString);
     }
