@@ -24,7 +24,8 @@ public class NetDetectionUtil : MonoBehaviour
             return;
         }
 
-        _IP = GetLocalIPAddress();
+        //_IP = GetLocalIPAddress();
+        _IP = "ddddd";
 
         _sender = new UdpClient(_localPort, AddressFamily.InterNetwork);
         IPEndPoint groupEP = new IPEndPoint(IPAddress.Broadcast, _remotePort);
@@ -64,11 +65,11 @@ public class NetDetectionUtil : MonoBehaviour
     private void _receiveData(IAsyncResult result)
     {
         var receiveIPGroup = new IPEndPoint(IPAddress.Any, _remotePort);
+
         byte[] received;
         if (_receiver != null)
         {
             received = _receiver.EndReceive(result, ref receiveIPGroup);
-            Debug.Log("Received:" + received.Length);
         }
         else
         {
@@ -76,6 +77,7 @@ public class NetDetectionUtil : MonoBehaviour
         }
         _receiver.BeginReceive(new AsyncCallback(_receiveData), null);
         string receivedString = Encoding.ASCII.GetString(received);
+        Debug.Log("Received from :" + receiveIPGroup.Address + ", Data: " + receivedString);
     }
 
     void Update()
@@ -102,7 +104,8 @@ public class NetDetectionUtil : MonoBehaviour
 
     public static string GetLocalIPAddress()
     {
-        var host = Dns.GetHostEntry(Dns.GetHostName());
+        var hostName = Dns.GetHostName();
+        var host = Dns.GetHostEntry(hostName);
         foreach (var ip in host.AddressList)
         {
             if (ip.AddressFamily == AddressFamily.InterNetwork)
