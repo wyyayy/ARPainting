@@ -55,9 +55,9 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\SDKs\Reporter\Editor\ReporterEditor.cs" />
+     <Compile Include="Assets\SDKs\VSCode-2.45\Plugins\Editor\VSCode.cs" />
      <Compile Include="Assets\UnityARKitPlugin\Examples\UnityParticlePainter\HSVPicker\Editor\BoxSliderEditor.cs" />
      <Compile Include="Assets\UnityARKitPlugin\Plugins\iOS\UnityARKit\Editor\UnityARBuildPostprocessor.cs" />
-     <Compile Include="Assets\VSCode-2.45\Plugins\Editor\VSCode.cs" />
      <None Include="Assets\UnityARKitPlugin\Examples\Common\Shaders\MobileOcclusion.shader" />
      <None Include="Assets\UnityARKitPlugin\ARKitRemote\ARKITREMOTE.txt" />
      <None Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\Web\TODO.txt" />

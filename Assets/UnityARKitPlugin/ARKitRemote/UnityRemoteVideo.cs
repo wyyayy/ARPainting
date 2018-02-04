@@ -88,18 +88,12 @@ namespace UnityEngine.XR.iOS
 		public void OnPreRender()
 		{
 			ARTextureHandles handles = m_Session.GetARVideoTextureHandles();
-			if (handles.textureY == System.IntPtr.Zero || handles.textureCbCr == System.IntPtr.Zero)
-			{
-				return;
-			}
-
-			if (!bTexturesInitialized)
-				return;
+			
+			if (handles.textureY == System.IntPtr.Zero || handles.textureCbCr == System.IntPtr.Zero) return;
+			if (!bTexturesInitialized) return;
 			
 			currentFrameIndex = (currentFrameIndex + 1) % 2;
-
 			Resolution currentResolution = Screen.currentResolution;
-
 
 			m_Session.SetCapturePixelData (true, PinByteArray(ref m_pinnedYArray,YByteArrayForFrame(currentFrameIndex)), PinByteArray(ref m_pinnedUVArray,UVByteArrayForFrame(currentFrameIndex)));
 

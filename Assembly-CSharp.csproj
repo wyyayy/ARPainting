@@ -54,8 +54,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\NetDetectionUtil.cs" />
      <Compile Include="Assets\Scripts\AppMgr.cs" />
+     <Compile Include="Assets\Scripts\ARVideo.cs" />
      <Compile Include="Assets\Scripts\Framework\Math\OOB.cs" />
      <Compile Include="Assets\Scripts\Framework\Utils\CameraExtensions.cs" />
      <Compile Include="Assets\Scripts\Framework\Utils\DrawArrow.cs" />
@@ -64,6 +64,8 @@
      <Compile Include="Assets\Scripts\Framework\Utils\StringReference.cs" />
      <Compile Include="Assets\Scripts\Framework\Utils\UnityExtensions.cs" />
      <Compile Include="Assets\Scripts\Framework\Utils\Utils.cs" />
+     <Compile Include="Assets\Scripts\UdpReceiver.cs" />
+     <Compile Include="Assets\Scripts\UdpSender.cs" />
      <Compile Include="Assets\SDKs\BaseLib\Source\Actor\Net\_NetRPCComponent.cs" />
      <Compile Include="Assets\SDKs\BaseLib\Source\Actor\Net\_NetRPCReturn.cs" />
      <Compile Include="Assets\SDKs\BaseLib\Source\Actor\Net\_RCPRetHandler.cs" />
@@ -271,8 +273,6 @@
      <Compile Include="Assets\StickClient.cs" />
      <Compile Include="Assets\TestCursorDetection.cs" />
      <Compile Include="Assets\TestUDP.cs" />
-     <Compile Include="Assets\UdpReceiver.cs" />
-     <Compile Include="Assets\UdpSender.cs" />
      <Compile Include="Assets\UnityARKitPlugin\ARKitRemote\ARKitFaceTrackingRemoteConnection.cs" />
      <Compile Include="Assets\UnityARKitPlugin\ARKitRemote\ARKitRemoteConnection.cs" />
      <Compile Include="Assets\UnityARKitPlugin\ARKitRemote\ConnectionMessageIds.cs" />
