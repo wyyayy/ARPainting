@@ -81,7 +81,7 @@ public class VideoCamera : MonoBehaviour
         //距X左的距离        距Y屏上的距离  
         // t.ReadPixels(new Rect(220, 180, 200, 180), 0, 0, false);  
         t.Apply();  
-        byte[] byt=t.EncodeToPNG();  
+        //byte[] byt=t.EncodeToPNG();  
 //      File.WriteAllBytes(Application.dataPath+"/Photoes/"+Time.time+".jpg",byt);  
         _webCamTexture.Play();  
     }  
@@ -99,7 +99,7 @@ public class VideoCamera : MonoBehaviour
             texture.ReadPixels(new Rect(Screen.width/2-180,Screen.height/2-50,360,300), 0, 0, false);  
             texture.Apply();  
             print(texture);  
-            byte[] byt = texture.EncodeToPNG();  
+            //byte[] byt = texture.EncodeToPNG();  
 //          File.WriteAllBytes(Application.dataPath + "/MulPhotoes/" + Time.time.ToString().Split('.')[0] + "_" + Time.time.ToString().Split('.')[1] + ".png", byt);  
             Thread.Sleep(300);  
         }  
