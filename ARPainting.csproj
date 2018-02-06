@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.20506</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{C9BF3581-36FA-3A62-7363-1F111A2F1892}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AssemblyName>Assembly-CSharp.dll</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile></TargetFrameworkProfile>
+    <CompilerResponseFile></CompilerResponseFile>
+    <UnityProjectType>Game:1</UnityProjectType>
+    <UnityBuildTarget>StandaloneOSXIntel64:27</UnityBuildTarget>
+    <UnityVersion>2017.1.0p4</UnityVersion>
+    <RootNamespace></RootNamespace>
+    <LangVersion>4</LangVersion>
+</PropertyGroup>
+  <PropertyGroup>
+    <NoConfig>true</NoConfig>
+    <NoStdLib>true</NoStdLib>
+    <AddAdditionalExplicitAssemblyReferences>false</AddAdditionalExplicitAssemblyReferences>
+	<LangVersion>default</LangVersion>
+</PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Temp\UnityVS_bin\Debug\</OutputPath>
+    <IntermediateOutputPath>Temp\UnityVS_obj\Debug\</IntermediateOutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DefineConstants>DEBUG;TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_2017_1_OR_NEWER;UNITY_2017_1_0;UNITY_2017_1;UNITY_2017;PLATFORM_ARCH_64;UNITY_64;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_DUCK_TYPING;ENABLE_GENERICS;ENABLE_PVR_GI;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_RUNTIME_NAVMESH_BUILDING;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_DIRECTOR;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_COLLAB_SOFTLOCKS;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_USE_WEBREQUEST;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_WEBSOCKET_CLIENT;ENABLE_DIRECTOR_AUDIO;ENABLE_TIMELINE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;ENABLE_NATIVE_ARRAY;ENABLE_SPRITE_MASKING;INCLUDE_DYNAMIC_GI;INCLUDE_GI;ENABLE_MONO_BDWGC;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;INCLUDE_PUBNUB;ENABLE_PLAYMODE_TESTS_RUNNER;ENABLE_VIDEO;ENABLE_RMGUI;ENABLE_CUSTOM_RENDER_TEXTURE;ENABLE_STYLE_SHEETS;UNITY_STANDALONE_OSX;UNITY_STANDALONE;ENABLE_SUBSTANCE;ENABLE_GAMECENTER;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_VR;ENABLE_MODULAR_UNITYENGINE_ASSEMBLIES;ENABLE_CLUSTERINPUT;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;NET_2_0_SUBSET;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_OSX;ENABLE_NATIVE_ARRAY_CHECKS;UNITY_TEAM_LICENSE;ENABLE_VSTU</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+	<LangVersion>default</LangVersion>
+</PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Temp\UnityVS_bin\Release\</OutputPath>
+    <IntermediateOutputPath>Temp\UnityVS_obj\Release\</IntermediateOutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DefineConstants>TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_2017_1_OR_NEWER;UNITY_2017_1_0;UNITY_2017_1;UNITY_2017;PLATFORM_ARCH_64;UNITY_64;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_DUCK_TYPING;ENABLE_GENERICS;ENABLE_PVR_GI;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_RUNTIME_NAVMESH_BUILDING;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_DIRECTOR;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_COLLAB_SOFTLOCKS;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_USE_WEBREQUEST;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_WEBSOCKET_CLIENT;ENABLE_DIRECTOR_AUDIO;ENABLE_TIMELINE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;ENABLE_NATIVE_ARRAY;ENABLE_SPRITE_MASKING;INCLUDE_DYNAMIC_GI;INCLUDE_GI;ENABLE_MONO_BDWGC;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;INCLUDE_PUBNUB;ENABLE_PLAYMODE_TESTS_RUNNER;ENABLE_VIDEO;ENABLE_RMGUI;ENABLE_CUSTOM_RENDER_TEXTURE;ENABLE_STYLE_SHEETS;UNITY_STANDALONE_OSX;UNITY_STANDALONE;ENABLE_SUBSTANCE;ENABLE_GAMECENTER;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_VR;ENABLE_MODULAR_UNITYENGINE_ASSEMBLIES;ENABLE_CLUSTERINPUT;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;NET_2_0_SUBSET;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_OSX;ENABLE_NATIVE_ARRAY_CHECKS;UNITY_TEAM_LICENSE;ENABLE_VSTU</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+	<LangVersion>default</LangVersion>
+</PropertyGroup>
+  <ItemGroup>
+    <Reference Include="mscorlib">
+      <HintPath>/Applications/Unity 2017.1/Unity.app/Contents/Mono/lib/mono/unity/mscorlib.dll</HintPath>
+    </Reference>
+    <Reference Include="System">
+      <HintPath>/Applications/Unity 2017.1/Unity.app/Contents/Mono/lib/mono/unity/System.dll</HintPath>
+    </Reference>
+    <Reference Include="System.XML">
+      <HintPath>/Applications/Unity 2017.1/Unity.app/Contents/Mono/lib/mono/unity/System.XML.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Core">
+      <HintPath>/Applications/Unity 2017.1/Unity.app/Contents/Mono/lib/mono/unity/System.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Boo.Lang">
+      <HintPath>/Applications/Unity 2017.1/Unity.app/Contents/Mono/lib/mono/unity/Boo.Lang.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityScript.Lang">
+      <HintPath>/Applications/Unity 2017.1/Unity.app/Contents/Mono/lib/mono/unity/UnityScript.Lang.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization">
+      <HintPath>/Applications/Unity 2017.1/Unity.app/Contents/Mono/lib/mono/unity/System.Runtime.Serialization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <HintPath>/Applications/Unity 2017.1/Unity.app/Contents/Mono/lib/mono/unity/System.Xml.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor">
+      <HintPath>/Applications/Unity 2017.1/Unity.app/Contents/Managed/UnityEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>/Applications/Unity 2017.1/Unity.app/Contents/Managed/UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>/Applications/Unity 2017.1/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.Networking">
+      <HintPath>/Applications/Unity 2017.1/Unity.app/Contents/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TestRunner">
+      <HintPath>/Applications/Unity 2017.1/Unity.app/Contents/UnityExtensions/Unity/TestRunner/UnityEngine.TestRunner.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework">
+      <HintPath>/Applications/Unity 2017.1/Unity.app/Contents/UnityExtensions/Unity/TestRunner/net35/unity-custom/nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.Timeline">
+      <HintPath>/Applications/Unity 2017.1/Unity.app/Contents/UnityExtensions/Unity/Timeline/RuntimeEditor/UnityEngine.Timeline.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.Analytics">
+      <HintPath>/Applications/Unity 2017.1/Unity.app/Contents/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.HoloLens">
+      <HintPath>/Applications/Unity 2017.1/Unity.app/Contents/UnityExtensions/Unity/UnityHoloLens/RuntimeEditor/UnityEngine.HoloLens.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.iOS.Extensions.Xcode">
+      <HintPath>/Applications/Unity 2017.1/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.iOS.Extensions.Common">
+      <HintPath>/Applications/Unity 2017.1/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Common.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Assets\Scripts\AppMgr.cs" />
+    <Compile Include="Assets\Scripts\ARVideo.cs" />
+    <Compile Include="Assets\Scripts\Framework\Math\OOB.cs" />
+    <Compile Include="Assets\Scripts\Framework\Utils\CameraExtensions.cs" />
+    <Compile Include="Assets\Scripts\Framework\Utils\DrawArrow.cs" />
+    <Compile Include="Assets\Scripts\Framework\Utils\FPSUtil.cs" />
+    <Compile Include="Assets\Scripts\Framework\Utils\HSBColor.cs" />
+    <Compile Include="Assets\Scripts\Framework\Utils\StringReference.cs" />
+    <Compile Include="Assets\Scripts\Framework\Utils\UnityExtensions.cs" />
+    <Compile Include="Assets\Scripts\Framework\Utils\Utils.cs" />
+    <Compile Include="Assets\Scripts\UdpReceiver.cs" />
+    <Compile Include="Assets\Scripts\UdpSender.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Actor\Net\_NetRPCComponent.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Actor\Net\_NetRPCReturn.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Actor\Net\_RCPRetHandler.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Actor\Net\Connection.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Actor\Net\HeaderType.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Actor\Net\IAsyncCall.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Actor\Net\NetMessage.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Actor\Net\NetNotify.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Actor\Net\NetRPCCall.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Actor\Net\Socket.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Actor\Serializable\EmptyObject.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Actor\Serializable\ISerializableData.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Actor\Serializable\PojoObject.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Actor\Serializable\ProtoBufUtil.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Actor\Serializable\SimpleArray.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Actor\Serializable\SimpleObject.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Actor\Serializable\SingleValue.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Algorithem\Deque.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Algorithem\FastPool .cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Algorithem\FastPriorityQueue.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Algorithem\FastPriorityQueueNode.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Algorithem\IPoolable.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Algorithem\IPriorityQueue.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Algorithem\ObjectPool.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Algorithem\QuickList.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Animation\Curves.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Animation\Easing.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Animation\Path.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Animation\Pathing.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Animation\Tickable.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Animation\Timer.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Animation\TimerMgr.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Animation\Tween\_ColorHelper.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Animation\Tween\_FloatHelper.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Animation\Tween\_V2Helper.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Animation\Tween\_V3Helper.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Animation\Tween\Bounce.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Animation\Tween\Easer.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Animation\Tween\EaseType.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Animation\Tween\IHelper.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Animation\Tween\IPropertilized.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Animation\Tween\IProperty.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Animation\Tween\Tweener.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Animation\Tween\TweenExtensions.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Animation\Tween\TweenMgr.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Animation\WayPoint.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Core\_IDisposable.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Core\EventDispatcher.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Core\FSMMachine.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Core\FSMState.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Core\IRefCounter.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Core\ManagerComponent.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Core\Signal.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Core\SoundMgr.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Coroutine\_WaitCB.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Coroutine\_WaitChildCoroutines.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Coroutine\_WaitMultiCondition.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Coroutine\_YieldInstructions.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Coroutine\ChildCoroutineJoiner.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Coroutine\Coroutine.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Coroutine\CoroutineExtension.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Coroutine\CoroutineMgr.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Coroutine\Exceptions.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Coroutine\ICondition.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Coroutine\IYieldInstruction.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Coroutine\WaitMultiInstruction.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Coroutine\WaitType.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Network\ByteBuffer.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Network\HttpLoader.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Network\Message.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Network\MsgBase.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Network\MsgType.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Network\SocketConnection.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Network\SyncSocketWrapper.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Network\VertXClient.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\JsonFx\About.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\JsonFx\AOTFix.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\JsonFx\DataReaderProvider.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\JsonFx\DataWriterProvider.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\JsonFx\EcmaScriptIdentifier.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\JsonFx\EcmaScriptWriter.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\JsonFx\IDataReader.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\JsonFx\IDataWriter.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\JsonFx\IJsonSerializable.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\JsonFx\JsonDataReader.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\JsonFx\JsonDataWriter.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\JsonFx\JsonIgnoreAttribute.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\JsonFx\JsonMemberAttribute.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\JsonFx\JsonNameAttribute.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\JsonFx\JsonOptInAttribute.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\JsonFx\JsonReader.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\JsonFx\JsonReaderSettings.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\JsonFx\JsonSerializationException.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\JsonFx\JsonSpecifiedPropertyAttribute.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\JsonFx\JsonToken.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\JsonFx\JsonWriter.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\JsonFx\JsonWriterSettings.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\JsonFx\TypeCoercionUtility.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\JsonFx\XmlDataReader.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\JsonFx\XmlDataWriter.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\BclHelpers.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\BufferExtension.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\BufferPool.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\CallbackAttributes.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\Compiler\CompilerContext.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\Compiler\CompilerDelegates.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\Compiler\Local.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\DataFormat.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\Extensible.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\ExtensibleUtil.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\GlobalSuppressions.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\Helpers.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\IExtensible.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\IExtension.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\ImplicitFields.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\KeyValuePairProxy.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\Meta\AttributeMap.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\Meta\BasicList.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\Meta\CallbackSet.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\Meta\MetaType.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\Meta\RuntimeTypeModel.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\Meta\SubType.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\Meta\TypeFormatEventArgs.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\Meta\TypeModel.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\Meta\ValueMember.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\NetObjectCache.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\PrefixStyle.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\Properties\AssemblyInfo.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\ProtoContractAttribute.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\ProtoConverterAttribute.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\ProtoEnumAttribute.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\ProtoException.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\ProtoIgnoreAttribute.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\ProtoIncludeAttribute.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\ProtoMemberAttribute.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\ProtoReader.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\ProtoWriter.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\SerializationContext.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\Serializer.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\Serializers\ArrayDecorator.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\Serializers\BlobSerializer.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\Serializers\BooleanSerializer.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\Serializers\ByteSerializer.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\Serializers\CharSerializer.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\Serializers\CompiledSerializer.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\Serializers\DateTimeSerializer.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\Serializers\DecimalSerializer.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\Serializers\DefaultValueDecorator.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\Serializers\DoubleSerializer.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\Serializers\EnumSerializer.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\Serializers\FieldDecorator.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\Serializers\GuidSerializer.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\Serializers\ImmutableCollectionDecorator.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\Serializers\Int16Serializer.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\Serializers\Int32Serializer.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\Serializers\Int64Serializer.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\Serializers\IProtoSerializer.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\Serializers\IProtoTypeSerializer.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\Serializers\ISerializerProxy.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\Serializers\KeyValuePairDecorator.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\Serializers\ListDecorator.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\Serializers\MemberSpecifiedDecorator.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\Serializers\NetObjectSerializer.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\Serializers\NullDecorator.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\Serializers\ParseableSerializer.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\Serializers\PropertyDecorator.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\Serializers\ProtoDecoratorBase.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\Serializers\ReflectedUriDecorator.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\Serializers\SByteSerializer.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\Serializers\SingleSerializer.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\Serializers\StringSerializer.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\Serializers\SubItemSerializer.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\Serializers\SurrogateSerializer.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\Serializers\SystemTypeSerializer.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\Serializers\TagDecorator.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\Serializers\TimeSpanSerializer.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\Serializers\TupleSerializer.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\Serializers\TypeSerializer.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\Serializers\UInt16Serializer.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\Serializers\UInt32Serializer.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\Serializers\UInt64Serializer.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\Serializers\UriDecorator.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\ServiceModel\ProtoBehaviorAttribute.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\ServiceModel\ProtoBehaviorExtensionElement.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\ServiceModel\ProtoEndpointBehavior.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\ServiceModel\ProtoOperationBehavior.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\ServiceModel\XmlProtoSerializer.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\SubItemToken.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\WireType.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Testing\NetworkStub.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Utils\ByteUtils.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Utils\Debugger.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Utils\MarkDestroyOnStart.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Utils\MarkDontDestroy.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Utils\MarkInvisibleOnStart.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Utils\MathEx.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Utils\NumberUtil.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Utils\Singleton.cs" />
+    <Compile Include="Assets\SDKs\BaseLib\Source\Utils\TypeUtil.cs" />
+    <Compile Include="Assets\SDKs\Reporter\Reporter.cs" />
+    <Compile Include="Assets\SDKs\Reporter\ReporterGUI.cs" />
+    <Compile Include="Assets\SDKs\Reporter\ReporterMessageReceiver.cs" />
+    <Compile Include="Assets\SDKs\Reporter\Rotate.cs" />
+    <Compile Include="Assets\SDKs\Reporter\TestReporter.cs" />
+    <Compile Include="Assets\StickClient.cs" />
+    <Compile Include="Assets\TestCursorDetection.cs" />
+    <Compile Include="Assets\TestUDP.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\ARKitRemote\ARKitFaceTrackingRemoteConnection.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\ARKitRemote\ARKitRemoteConnection.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\ARKitRemote\ConnectionMessageIds.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\ARKitRemote\ConnectToEditor.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\ARKitRemote\EditorARFaceAnchor.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\ARKitRemote\EditorHitTest.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\ARKitRemote\ObjectSerializationExtension.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\ARKitRemote\SerializableObjects.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\ARKitRemote\UnityRemoteVideo.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\Examples\AddRemoveAnchorExample\UnityARUserAnchorExample.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\Examples\FaceTracking\ARCameraTracker.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\Examples\FaceTracking\BlendshapeDriver.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\Examples\FaceTracking\BlendshapePrinter.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\Examples\FaceTracking\UnityARFaceAnchorManager.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\Examples\FaceTracking\UnityARFaceMeshManager.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\Examples\FocusSquare\FocusSquare.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\Examples\UnityARBallz\BallMaker.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\Examples\UnityARBallz\BallMover.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\Examples\UnityARBallz\Ballz.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\Examples\UnityARBallz\ModeSwitcher.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\Examples\UnityParticlePainter\HSVPicker\Enums\ColorValues.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\Examples\UnityParticlePainter\HSVPicker\Events\ColorChangedEvent.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\Examples\UnityParticlePainter\HSVPicker\Events\HSVChangedEvent.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\Examples\UnityParticlePainter\HSVPicker\Other\ColorPickerTester.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\Examples\UnityParticlePainter\HSVPicker\Other\TiltWindow.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\Examples\UnityParticlePainter\HSVPicker\UI\ColorImage.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\Examples\UnityParticlePainter\HSVPicker\UI\ColorLabel.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\Examples\UnityParticlePainter\HSVPicker\UI\ColorPicker.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\Examples\UnityParticlePainter\HSVPicker\UI\ColorPresets.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\Examples\UnityParticlePainter\HSVPicker\UI\ColorSlider.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\Examples\UnityParticlePainter\HSVPicker\UI\ColorSliderImage.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\Examples\UnityParticlePainter\HSVPicker\UI\HexColorField.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\Examples\UnityParticlePainter\HSVPicker\UI\SVBoxSlider.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\Examples\UnityParticlePainter\HSVPicker\UtilityScripts\BoxSlider.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\Examples\UnityParticlePainter\HSVPicker\UtilityScripts\HSVUtil.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\Examples\UnityParticlePainter\ParticlePainter.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\Plugins\iOS\UnityARKit\Helpers\AR3DOFCameraManager.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\Plugins\iOS\UnityARKit\Helpers\ARPlaneAnchorGameObject.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\Plugins\iOS\UnityARKit\Helpers\DontDestroyOnLoad.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\Plugins\iOS\UnityARKit\Helpers\PointCloudParticleExample.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\Plugins\iOS\UnityARKit\Helpers\UnityARAmbient.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\Plugins\iOS\UnityARKit\Helpers\UnityARAnchorManager.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\Plugins\iOS\UnityARKit\Helpers\UnityARCameraManager.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\Plugins\iOS\UnityARKit\Helpers\UnityARCameraNearFar.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\Plugins\iOS\UnityARKit\Helpers\UnityARGeneratePlane.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\Plugins\iOS\UnityARKit\Helpers\UnityARHitTestExample.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\Plugins\iOS\UnityARKit\Helpers\UnityARKitControl.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\Plugins\iOS\UnityARKit\Helpers\UnityARKitLightManager.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\Plugins\iOS\UnityARKit\Helpers\UnityARMatrixOps.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\Plugins\iOS\UnityARKit\Helpers\UnityARUserAnchorComponent.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\Plugins\iOS\UnityARKit\Helpers\UnityARUtility.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\Plugins\iOS\UnityARKit\Helpers\UnityARVideo.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\Plugins\iOS\UnityARKit\Helpers\UnityPointCloudExample.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\Plugins\iOS\UnityARKit\NativeInterface\ARAnchor.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\Plugins\iOS\UnityARKit\NativeInterface\ARCamera.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\Plugins\iOS\UnityARKit\NativeInterface\ARErrorCode.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\Plugins\iOS\UnityARKit\NativeInterface\ARFaceAnchor.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\Plugins\iOS\UnityARKit\NativeInterface\ARFrame.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\Plugins\iOS\UnityARKit\NativeInterface\ARHitTestResult.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\Plugins\iOS\UnityARKit\NativeInterface\ARHitTestResultType.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\Plugins\iOS\UnityARKit\NativeInterface\ARLightEstimate.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\Plugins\iOS\UnityARKit\NativeInterface\ARPlaneAnchor.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\Plugins\iOS\UnityARKit\NativeInterface\ARPlaneAnchorAlignment.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\Plugins\iOS\UnityARKit\NativeInterface\ARPoint.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\Plugins\iOS\UnityARKit\NativeInterface\ARRect.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\Plugins\iOS\UnityARKit\NativeInterface\ARSize.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\Plugins\iOS\UnityARKit\NativeInterface\ARTextureHandles.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\Plugins\iOS\UnityARKit\NativeInterface\ARTrackingQuality.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\Plugins\iOS\UnityARKit\NativeInterface\ARTrackingState.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\Plugins\iOS\UnityARKit\NativeInterface\ARTrackingStateReason.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\Plugins\iOS\UnityARKit\NativeInterface\ARUserAnchor.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\Plugins\iOS\UnityARKit\NativeInterface\UnityARSessionNativeInterface.cs" />
+    <Compile Include="Assets\UnityARKitPlugin\UnityARKitPluginSettings.cs" />
+    <Compile Include="Assets\VideoCamera.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\SDKs\BaseLib\Source\SDKs\JsonFx\Readme.txt" />
+    <None Include="Assets\SDKs\BaseLib\Source\SDKs\protobuf\Web\TODO.txt" />
+    <None Include="Assets\UnityARKitPlugin\ARKitRemote\ARKITREMOTE.txt" />
+    <None Include="Assets\UnityARKitPlugin\Examples\Common\Shaders\InstancedSurfaceShader.shader" />
+    <None Include="Assets\UnityARKitPlugin\Examples\Common\Shaders\MobileARShadow.shader" />
+    <None Include="Assets\UnityARKitPlugin\Examples\Common\Shaders\MobileOcclusion.shader" />
+    <None Include="Assets\UnityARKitPlugin\Plugins\iOS\UnityARKit\Shaders\YUVShader.shader" />
+    <None Include="Assets\UnityARKitPlugin\Plugins\iOS\UnityARKit\Shaders\YUVShaderLinear.shader" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="GenerateTargetFrameworkMonikerAttribute" />
+</Project>
