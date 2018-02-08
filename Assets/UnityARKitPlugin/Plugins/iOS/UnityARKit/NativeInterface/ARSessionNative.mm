@@ -4,6 +4,13 @@
 #include "UnityAppController.h"
 
 
+struct VideoPixelBuffer
+{
+    void* pYPixelBytes;
+    void* pUVPixelBytes;
+};
+
+/// ---
 typedef struct
 {
     float x,y,z,w;
@@ -552,6 +559,8 @@ static UnityPixelBuffer s_UnityPixelBuffers;
     CVMetalTextureCacheRef _textureCache;
     BOOL _getPointCloudData;
     BOOL _getLightEstimation;
+
+    VideoPixelBuffer _videoPixelBuffer;
 }
 @end
 
@@ -562,6 +571,8 @@ static UnityPixelBuffer s_UnityPixelBuffers;
     if (self = [super init])
     {
         _classToCallbackMap = [[NSMutableDictionary alloc] init];
+        _videoPixelBuffer.pYPixelBytes = NULL;
+        _videoPixelBuffer.pUVPixelBytes = NULL;
     }
     return self;
 }
@@ -1064,6 +1075,11 @@ extern "C" UnityARHitTestResult GetLastHitTestResult(int index)
     }
 
     return unityResult;
+}
+
+extern "C" VideoPixelBuffer GetVideoPixelBuffer()
+{
+    return _videoPixelBuffer;
 }
 
 extern "C" UnityARTextureHandles GetVideoTextureHandles()
