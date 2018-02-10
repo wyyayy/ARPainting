@@ -121,7 +121,7 @@ namespace UnityEngine.XR.iOS
 			UnityARSessionNativeInterface.ARFrameUpdatedEvent -= UpdateFrame;
 			_bCommandBufferInited = false;
 
-			m_Session.SetCapturePixelData (false, IntPtr.Zero, IntPtr.Zero);
+			m_Session.SetVideoPixelBuffer(IntPtr.Zero, IntPtr.Zero);
 
 			m_pinnedYArray.Free ();
 			m_pinnedUVArray.Free ();			

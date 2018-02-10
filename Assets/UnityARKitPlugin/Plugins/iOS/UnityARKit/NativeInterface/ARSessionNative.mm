@@ -678,74 +678,27 @@ static CGAffineTransform s_CurAffineTransform;
             _frameCallback(unityARCamera);
         });
     }
-
     
     if (CVPixelBufferGetPlaneCount(pixelBuffer) < 2 || CVPixelBufferGetPixelFormatType(pixelBuffer) != kCVPixelFormatType_420YpCbCr8BiPlanarFullRange) {
         return;
     }
+
+    if(nullptr == _videoPixelBuffer.pYPixelBytes || nullptr == _videoPixelBuffer.pUVPixelBytes) return;
     
-    if (s_UnityPixelBuffers.bEnable)
-    {
+    /// Grab pixels
+    CVPixelBufferLockBaseAddress(pixelBuffer, kCVPixelBufferLock_ReadOnly);
         
-        CVPixelBufferLockBaseAddress(pixelBuffer, kCVPixelBufferLock_ReadOnly);
+    assert (_videoPixelBuffer.pYPixelBytes != nullptr);
+    unsigned long numBytes = CVPixelBufferGetBytesPerRowOfPlane(pixelBuffer, 0) * CVPixelBufferGetHeightOfPlane(pixelBuffer,0);
+    void* baseAddress = CVPixelBufferGetBaseAddressOfPlane(pixelBuffer,0);
+    memcpy(_videoPixelBuffer.pYPixelBytes, baseAddress, numBytes);
         
-        if (s_UnityPixelBuffers.pYPixelBytes)
-        {
-            unsigned long numBytes = CVPixelBufferGetBytesPerRowOfPlane(pixelBuffer, 0) * CVPixelBufferGetHeightOfPlane(pixelBuffer,0);
-            void* baseAddress = CVPixelBufferGetBaseAddressOfPlane(pixelBuffer,0);
-            memcpy(s_UnityPixelBuffers.pYPixelBytes, baseAddress, numBytes);
-        }
-        if (s_UnityPixelBuffers.pUVPixelBytes)
-        {
-            unsigned long numBytes = CVPixelBufferGetBytesPerRowOfPlane(pixelBuffer, 1) * CVPixelBufferGetHeightOfPlane(pixelBuffer,1);
-            void* baseAddress = CVPixelBufferGetBaseAddressOfPlane(pixelBuffer,1);
-            memcpy(s_UnityPixelBuffers.pUVPixelBytes, baseAddress, numBytes);
-        }
+    assert (_videoPixelBuffer.pUVPixelBytes != nullptr);
+    numBytes = CVPixelBufferGetBytesPerRowOfPlane(pixelBuffer, 1) * CVPixelBufferGetHeightOfPlane(pixelBuffer,1);
+    baseAddress = CVPixelBufferGetBaseAddressOfPlane(pixelBuffer,1);
+    memcpy(_videoPixelBuffer.pUVPixelBytes, baseAddress, numBytes);
         
-        CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
-    }
-    
-    id<MTLTexture> textureY = nil;
-    id<MTLTexture> textureCbCr = nil;
-
-    // textureY
-    {
-        const size_t width = CVPixelBufferGetWidthOfPlane(pixelBuffer, 0);
-        const size_t height = CVPixelBufferGetHeightOfPlane(pixelBuffer, 0);
-        MTLPixelFormat pixelFormat = MTLPixelFormatR8Unorm;
-        
-        
-        CVMetalTextureRef texture = NULL;
-        CVReturn status = CVMetalTextureCacheCreateTextureFromImage(NULL, _textureCache, pixelBuffer, NULL, pixelFormat, width, height, 0, &texture);
-        if(status == kCVReturnSuccess)
-        {
-            textureY = CVMetalTextureGetTexture(texture);
-            CFRelease(texture);
-        }
-    }
-
-    // textureCbCr
-    {
-        const size_t width = CVPixelBufferGetWidthOfPlane(pixelBuffer, 1);
-        const size_t height = CVPixelBufferGetHeightOfPlane(pixelBuffer, 1);
-        MTLPixelFormat pixelFormat = MTLPixelFormatRG8Unorm;
-
-        CVMetalTextureRef texture = NULL;
-        CVReturn status = CVMetalTextureCacheCreateTextureFromImage(NULL, _textureCache, pixelBuffer, NULL, pixelFormat, width, height, 1, &texture);
-        if(status == kCVReturnSuccess)
-        {
-            textureCbCr = CVMetalTextureGetTexture(texture);
-            CFRelease(texture);
-        }
-    }
-
-    if (textureY != nil && textureCbCr != nil) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            // always assign the textures atomic
-            s_CapturedImageTextureY = textureY;
-            s_CapturedImageTextureCbCr = textureCbCr;
-        });
-    }
+    CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
 }
 
 - (void)session:(ARSession *)session didFailWithError:(NSError *)error
@@ -1077,9 +1030,10 @@ extern "C" UnityARHitTestResult GetLastHitTestResult(int index)
     return unityResult;
 }
 
-extern "C" VideoPixelBuffer GetVideoPixelBuffer()
+extern "C" void _SetVideoPixelBuffer (void* pYPixelBytes, void *pUVPixelBytes)
 {
-    return _videoPixelBuffer;
+    _videoPixelBuffe.pYPixelBytes = pYPixelBytes;
+    _videoPixelBuffe.pUVPixelBytes = pUVPixelBytes;    
 }
 
 extern "C" UnityARTextureHandles GetVideoTextureHandles()

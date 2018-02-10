@@ -336,6 +336,9 @@ namespace UnityEngine.XR.iOS {
 	    private static UnityARCamera s_Camera;
 		
 	    [DllImport("__Internal")]
+        private static extern void _SetVideoPixelBuffer();
+
+	    [DllImport("__Internal")]
         private static extern IntPtr unity_CreateNativeARSession();
 
         [DllImport("__Internal")]
@@ -541,6 +544,13 @@ namespace UnityEngine.XR.iOS {
 		{
 #if !UNITY_EDITOR
 			SetCameraNearFar (nearZ, farZ);
+#endif
+		}
+
+		public void SetVideoPixelBuffer(IntPtr pYByteArray, IntPtr pUVByteArray)
+		{
+#if !UNITY_EDITOR
+			_SetVideoPixelBuffer (iEnable,pYByteArray, pUVByteArray);
 #endif
 		}
 
