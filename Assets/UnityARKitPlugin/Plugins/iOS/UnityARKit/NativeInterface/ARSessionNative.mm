@@ -1030,10 +1030,12 @@ extern "C" UnityARHitTestResult GetLastHitTestResult(int index)
     return unityResult;
 }
 
-extern "C" void _SetVideoPixelBuffer (void* pYPixelBytes, void *pUVPixelBytes)
+extern "C" void _SetVideoPixelBuffer (void* nativeSession, void* pYPixelBytes, void *pUVPixelBytes)
 {
-    _videoPixelBuffe.pYPixelBytes = pYPixelBytes;
-    _videoPixelBuffe.pUVPixelBytes = pUVPixelBytes;    
+    UnityARSession* session = (__bridge UnityARSession*)nativeSession;
+    
+    session->_videoPixelBuffer.pYPixelBytes = pYPixelBytes;
+    session->_videoPixelBuffer.pUVPixelBytes = pUVPixelBytes;
 }
 
 extern "C" UnityARTextureHandles GetVideoTextureHandles()
