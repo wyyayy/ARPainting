@@ -26,14 +26,12 @@ namespace UnityEngine.XR.iOS
 		private float _currentFarZ;
 
 		/// Grab video pixels
-		private bool bTexturesInitialized;
-		private int currentFrameIndex;
-		private byte[] m_textureYBytes;
-		private byte[] m_textureUVBytes;
-		private byte[] m_textureYBytes2;
-		private byte[] m_textureUVBytes2;
-		private GCHandle m_pinnedYArray;
-		private GCHandle m_pinnedUVArray;
+		private bool _texturesInitialized;
+
+		private byte[] _textureYBytes;
+		private byte[] _textureUVBytes;
+		private GCHandle _pinnedYArray;
+		private GCHandle _pinnedUVArray;
 
 		public void Start()
 		{
@@ -61,11 +59,16 @@ namespace UnityEngine.XR.iOS
 				_updateCameraClipPlanes();
 			}
 
-			if (!bTexturesInitialized) 
+			if (!_texturesInitialized) 
 			{
 				InitializeTextures(camera);
 			}
 
+			_videoTextureY.LoadRawTextureData(_textureYBytes);
+			_videoTextureY.Apply ();
+			_videoTextureCbCr.LoadRawTextureData(_textureUVBytes);
+			_videoTextureCbCr.Apply ();			
+			
 			_displayTransform = new Matrix4x4();
 			_displayTransform.SetColumn(0, camera.displayTransform.column0);
 			_displayTransform.SetColumn(1, camera.displayTransform.column1);
@@ -81,16 +84,14 @@ namespace UnityEngine.XR.iOS
 			int numYBytes = camera.videoParams.yWidth * camera.videoParams.yHeight;
 			int numUVBytes = camera.videoParams.yWidth * camera.videoParams.yHeight / 2; //quarter resolution, but two bytes per pixel
 			
-			m_textureYBytes = new byte[numYBytes];
-			m_textureUVBytes = new byte[numUVBytes];
-			m_textureYBytes2 = new byte[numYBytes];
-			m_textureUVBytes2 = new byte[numUVBytes];
-			m_pinnedYArray = GCHandle.Alloc (m_textureYBytes);
-			m_pinnedUVArray = GCHandle.Alloc (m_textureUVBytes);
-			bTexturesInitialized = true;
+			_textureYBytes = new byte[numYBytes];
+			_textureUVBytes = new byte[numUVBytes];
+			_pinnedYArray = GCHandle.Alloc (_textureYBytes);
+			_pinnedUVArray = GCHandle.Alloc (_textureUVBytes);
+			_texturesInitialized = true;
 
-			IntPtr yBytes = PinByteArray(ref m_pinnedYArray, m_textureYBytes);
-			IntPtr uvBytes = PinByteArray(ref m_pinnedUVArray, m_textureUVBytes);
+			IntPtr yBytes = _pinByteArray(ref _pinnedYArray, _textureYBytes);
+			IntPtr uvBytes = _pinByteArray(ref _pinnedUVArray, _textureUVBytes);
 			_session.SetVideoPixelBuffer (yBytes, uvBytes);
 
 			int yWidth = camera.videoParams.yWidth;
@@ -115,26 +116,11 @@ namespace UnityEngine.XR.iOS
 
 		}
 
-		IntPtr PinByteArray(ref GCHandle handle, byte[] array)
+		IntPtr _pinByteArray(ref GCHandle handle, byte[] array)
 		{
 			handle.Free ();
 			handle = GCHandle.Alloc (array, GCHandleType.Pinned);
 			return handle.AddrOfPinnedObject ();
-		}
-
-		byte [] ByteArrayForFrame(int frame,  byte[] array0,  byte[] array1)
-		{
-			return frame == 1 ? array1 : array0;
-		}
-
-		byte [] YByteArrayForFrame(int frame)
-		{
-			return ByteArrayForFrame (frame, m_textureYBytes, m_textureYBytes2);
-		}
-
-		byte [] UVByteArrayForFrame(int frame)
-		{
-			return ByteArrayForFrame (frame, m_textureUVBytes, m_textureUVBytes2);
 		}
 
 		void OnDestroy()
@@ -143,13 +129,13 @@ namespace UnityEngine.XR.iOS
 			UnityARSessionNativeInterface.ARFrameUpdatedEvent -= UpdateFrame;
 			_bCommandBufferInited = false;
 
-			if(null != m_pinnedYArray) m_pinnedYArray.Free();
-			if(null != m_pinnedUVArray) m_pinnedUVArray.Free();
+			if(null != _pinnedYArray) _pinnedYArray.Free();
+			if(null != _pinnedUVArray) _pinnedUVArray.Free();
 
 			_session.SetVideoPixelBuffer(IntPtr.Zero, IntPtr.Zero);
 
-			m_pinnedYArray.Free ();
-			m_pinnedUVArray.Free ();			
+			_pinnedYArray.Free ();
+			_pinnedUVArray.Free ();			
 		}
 
 		public void SetYTexure(Texture2D YTex)
