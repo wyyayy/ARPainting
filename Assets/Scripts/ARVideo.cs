@@ -10,13 +10,15 @@ namespace UnityEngine.XR.iOS
         public Material ClearMaterial;
 
         private CommandBuffer _commandBuffer;
+
         private Texture2D _videoTextureY;
         private Texture2D _videoTextureCbCr;
+
 		private Matrix4x4 _displayTransform;
 
 		private bool _bCommandBufferInited;
 
-		private UnityARSessionNativeInterface m_Session;
+		private UnityARSessionNativeInterface _session;
 
 		/// Update near/far 
 		private Camera _targetCamera;
@@ -35,6 +37,8 @@ namespace UnityEngine.XR.iOS
 
 		public void Start()
 		{
+			_session = UnityARSessionNativeInterface.GetARSessionNativeInterface ();
+
 			UnityARSessionNativeInterface.ARFrameUpdatedEvent += UpdateFrame;
 			_bCommandBufferInited = false;
 
@@ -47,26 +51,29 @@ namespace UnityEngine.XR.iOS
 			_currentNearZ = _targetCamera.nearClipPlane;
 			_currentFarZ = _targetCamera.farClipPlane;
 
-			UnityARSessionNativeInterface.GetARSessionNativeInterface ().SetCameraClipPlanes (_currentNearZ, _currentFarZ);
+			_session.SetCameraClipPlanes (_currentNearZ, _currentFarZ);
 		}
 
 		void UpdateFrame(UnityARCamera camera)
 		{
 			if (_currentNearZ != _targetCamera.nearClipPlane || _currentFarZ != _targetCamera.farClipPlane) 
 			{
-				_updateCameraClipPlanes ();
+				_updateCameraClipPlanes();
 			}
 
 			if (!bTexturesInitialized) 
 			{
-				InitializeTextures (camera);
+				InitializeTextures(camera);
 			}
 
 			_displayTransform = new Matrix4x4();
 			_displayTransform.SetColumn(0, camera.displayTransform.column0);
 			_displayTransform.SetColumn(1, camera.displayTransform.column1);
 			_displayTransform.SetColumn(2, camera.displayTransform.column2);
-			_displayTransform.SetColumn(3, camera.displayTransform.column3);		
+			_displayTransform.SetColumn(3, camera.displayTransform.column3);
+
+			ClearMaterial.SetMatrix("_DisplayTransform", _displayTransform);
+
 		}
 
 		void InitializeTextures(UnityARCamera camera)
@@ -81,6 +88,22 @@ namespace UnityEngine.XR.iOS
 			m_pinnedYArray = GCHandle.Alloc (m_textureYBytes);
 			m_pinnedUVArray = GCHandle.Alloc (m_textureUVBytes);
 			bTexturesInitialized = true;
+
+			IntPtr yBytes = PinByteArray(ref m_pinnedYArray, m_textureYBytes);
+			IntPtr uvBytes = PinByteArray(ref m_pinnedUVArray, m_textureUVBytes);
+			_session.SetVideoPixelBuffer (yBytes, uvBytes);
+
+			int yWidth = camera.videoParams.yWidth;
+			int yHeight = camera.videoParams.yHeight;
+			int uvWidth = yWidth / 2;
+			int uvHeight = yHeight / 2;
+
+			_videoTextureY = new Texture2D (yWidth, yHeight, TextureFormat.R8, false, true);
+			_videoTextureCbCr = new Texture2D (uvWidth, uvHeight, TextureFormat.RG16, false, true);
+
+			ClearMaterial.SetTexture("_textureY", _videoTextureY);
+			ClearMaterial.SetTexture("_textureCbCr", _videoTextureCbCr);
+
 		}
 
 		void InitializeCommandBuffer()
@@ -91,7 +114,6 @@ namespace UnityEngine.XR.iOS
 			_bCommandBufferInited = true;
 
 		}
-
 
 		IntPtr PinByteArray(ref GCHandle handle, byte[] array)
 		{
@@ -121,52 +143,14 @@ namespace UnityEngine.XR.iOS
 			UnityARSessionNativeInterface.ARFrameUpdatedEvent -= UpdateFrame;
 			_bCommandBufferInited = false;
 
-			m_Session.SetVideoPixelBuffer(IntPtr.Zero, IntPtr.Zero);
+			if(null != m_pinnedYArray) m_pinnedYArray.Free();
+			if(null != m_pinnedUVArray) m_pinnedUVArray.Free();
+
+			_session.SetVideoPixelBuffer(IntPtr.Zero, IntPtr.Zero);
 
 			m_pinnedYArray.Free ();
 			m_pinnedUVArray.Free ();			
 		}
-
-#if !UNITY_EDITOR
-
-        public void OnPreRender()
-        {
-			ARTextureHandles handles = UnityARSessionNativeInterface.GetARSessionNativeInterface ().GetARVideoTextureHandles();
-            if (handles.textureY == System.IntPtr.Zero || handles.textureCbCr == System.IntPtr.Zero)
-            {
-                return;
-            }
-
-            if (!bCommandBufferInitialized) {
-                InitializeCommandBuffer ();
-            }
-
-            Resolution currentResolution = Screen.currentResolution;
-
-            // Texture Y
-            if (_videoTextureY == null) {
-              _videoTextureY = Texture2D.CreateExternalTexture(currentResolution.width, currentResolution.height,
-                  TextureFormat.R8, false, false, (System.IntPtr)handles.textureY);
-              _videoTextureY.filterMode = FilterMode.Bilinear;
-              _videoTextureY.wrapMode = TextureWrapMode.Repeat;
-              m_ClearMaterial.SetTexture("_textureY", _videoTextureY);
-            }
-
-            // Texture CbCr
-            if (_videoTextureCbCr == null) {
-              _videoTextureCbCr = Texture2D.CreateExternalTexture(currentResolution.width, currentResolution.height,
-                  TextureFormat.RG16, false, false, (System.IntPtr)handles.textureCbCr);
-              _videoTextureCbCr.filterMode = FilterMode.Bilinear;
-              _videoTextureCbCr.wrapMode = TextureWrapMode.Repeat;
-              m_ClearMaterial.SetTexture("_textureCbCr", _videoTextureCbCr);
-            }
-
-            _videoTextureY.UpdateExternalTexture(handles.textureY);
-            _videoTextureCbCr.UpdateExternalTexture(handles.textureCbCr);
-
-			m_ClearMaterial.SetMatrix("_DisplayTransform", _displayTransform);
-        }
-#else
 
 		public void SetYTexure(Texture2D YTex)
 		{
@@ -191,6 +175,5 @@ namespace UnityEngine.XR.iOS
 			ClearMaterial.SetMatrix("_DisplayTransform", _displayTransform);
 		}
  
-#endif
     }
 }
