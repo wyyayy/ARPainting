@@ -55,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Scripts\AppMgr.cs" />
+     <Compile Include="Assets\Scripts\ARSession.cs" />
      <Compile Include="Assets\Scripts\ARVideo.cs" />
      <Compile Include="Assets\Scripts\Framework\Math\OOB.cs" />
      <Compile Include="Assets\Scripts\Framework\Utils\CameraExtensions.cs" />

@@ -1,11 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+#pragma warning disable 0109, 0108
+#pragma warning disable 1692 
+
 public class ColorPickerTester : MonoBehaviour 
 {
-
-    public new Renderer renderer;
-    public ColorPicker picker;
+    public Renderer renderer;
+    public ColorPicker picker; 
 
 	// Use this for initialization
 	void Start () 

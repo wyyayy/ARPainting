@@ -3,80 +3,89 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.iOS;
 
-public class UnityARCameraManager : MonoBehaviour {
+public class UnityARCameraManager : MonoBehaviour
+{
+    public Camera Camera;
 
-    public Camera m_camera;
-    private UnityARSessionNativeInterface m_session;
-	private Material savedClearMaterial;
+    [Header("AR Config Options")]
+    public UnityARAlignment StartAlignment = UnityARAlignment.UnityARAlignmentGravity;
+    public UnityARPlaneDetection PlaneDetection = UnityARPlaneDetection.Horizontal;
+    public bool GetPointCloud = true;
+    public bool EnableLightEstimation = true;
 
-	[Header("AR Config Options")]
-	public UnityARAlignment startAlignment = UnityARAlignment.UnityARAlignmentGravity;
-	public UnityARPlaneDetection planeDetection = UnityARPlaneDetection.Horizontal;
-	public bool getPointCloud = true;
-	public bool enableLightEstimation = true;
+    private UnityARSessionNativeInterface _session;
 
-	// Use this for initialization
-	void Start () {
 
-		m_session = UnityARSessionNativeInterface.GetARSessionNativeInterface();
+    private Material __savedClearMaterial;
 
-		Application.targetFrameRate = 60;
+    // Use this for initialization
+    void Start()
+    {
+        _session = UnityARSessionNativeInterface.GetARSessionNativeInterface();
+
+        Application.targetFrameRate = 60;
         ARKitWorldTrackingSessionConfiguration config = new ARKitWorldTrackingSessionConfiguration();
-		config.planeDetection = planeDetection;
-		config.alignment = startAlignment;
-		config.getPointCloudData = getPointCloud;
-		config.enableLightEstimation = enableLightEstimation;
+        config.planeDetection = PlaneDetection;
+        config.alignment = StartAlignment;
+        config.getPointCloudData = GetPointCloud;
+        config.enableLightEstimation = EnableLightEstimation;
 
-		if (config.IsSupported) {
-			m_session.RunWithConfig (config);
-		}
-
-		if (m_camera == null) {
-			m_camera = Camera.main;
-		}
-	}
-
-	public void SetCamera(Camera newCamera)
-	{
-		if (m_camera != null) {
-			UnityARVideo oldARVideo = m_camera.gameObject.GetComponent<UnityARVideo> ();
-			if (oldARVideo != null) {
-				savedClearMaterial = oldARVideo.m_ClearMaterial;
-				Destroy (oldARVideo);
-			}
-		}
-		SetupNewCamera (newCamera);
-	}
-
-	private void SetupNewCamera(Camera newCamera)
-	{
-		m_camera = newCamera;
-
-        if (m_camera != null) {
-            UnityARVideo unityARVideo = m_camera.gameObject.GetComponent<UnityARVideo> ();
-            if (unityARVideo != null) {
-                savedClearMaterial = unityARVideo.m_ClearMaterial;
-                Destroy (unityARVideo);
-            }
-            unityARVideo = m_camera.gameObject.AddComponent<UnityARVideo> ();
-            unityARVideo.m_ClearMaterial = savedClearMaterial;
+        if (config.IsSupported)
+        {
+            _session.RunWithConfig(config);
         }
-	}
 
-	// Update is called once per frame
+        if (Camera == null)
+        {
+            Camera = Camera.main;
+        }
+    }
 
-	void Update () {
-		
-        if (m_camera != null)
+    public void SetCamera(Camera newCamera)
+    {
+        if (Camera != null)
+        {
+            UnityARVideo oldARVideo = Camera.gameObject.GetComponent<UnityARVideo>();
+            if (oldARVideo != null)
+            {
+                __savedClearMaterial = oldARVideo.m_ClearMaterial;
+                Destroy(oldARVideo);
+            }
+        }
+        SetupNewCamera(newCamera);
+    }
+
+    private void SetupNewCamera(Camera newCamera)
+    {
+        Camera = newCamera;
+
+        if (Camera != null)
+        {
+            UnityARVideo unityARVideo = Camera.gameObject.GetComponent<UnityARVideo>();
+            if (unityARVideo != null)
+            {
+                __savedClearMaterial = unityARVideo.m_ClearMaterial;
+                Destroy(unityARVideo);
+            }
+            unityARVideo = Camera.gameObject.AddComponent<UnityARVideo>();
+            unityARVideo.m_ClearMaterial = __savedClearMaterial;
+        }
+    }
+
+    // Update is called once per frame
+
+    void Update()
+    {
+        if (Camera != null)
         {
             // JUST WORKS!
-            Matrix4x4 matrix = m_session.GetCameraPose();
-			m_camera.transform.localPosition = UnityARMatrixOps.GetPosition(matrix);
-			m_camera.transform.localRotation = UnityARMatrixOps.GetRotation (matrix);
+            Matrix4x4 matrix = _session.GetCameraPose();
+            Camera.transform.localPosition = UnityARMatrixOps.GetPosition(matrix);
+            Camera.transform.localRotation = UnityARMatrixOps.GetRotation(matrix);
 
-            m_camera.projectionMatrix = m_session.GetCameraProjection ();
+            Camera.projectionMatrix = _session.GetCameraProjection();
         }
 
-	}
+    }
 
 }
