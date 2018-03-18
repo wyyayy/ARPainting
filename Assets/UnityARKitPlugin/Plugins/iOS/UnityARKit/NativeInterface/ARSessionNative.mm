@@ -1030,6 +1030,19 @@ extern "C" UnityARHitTestResult GetLastHitTestResult(int index)
     return unityResult;
 }
 
+// Must match ARHitTestResult in ARHitTestResult.cs
+extern "C" struct ARJoyStickData
+{
+    /// ScreenPos;
+    /// Size;
+};
+
+extern "C" ARJoyStickData _GetARJoyStickData ()
+{
+    ARJoyStickData data;
+    return data;
+}
+
 extern "C" void _SetVideoPixelBuffer (void* nativeSession, void* pYPixelBytes, void *pUVPixelBytes)
 {
     UnityARSession* session = (__bridge UnityARSession*)nativeSession;

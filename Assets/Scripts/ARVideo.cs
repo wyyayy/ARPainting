@@ -30,6 +30,7 @@ namespace ARSDK
 
 		private byte[] _textureYBytes;
 		private byte[] _textureUVBytes;
+		
 		private GCHandle _pinnedYArray;
 		private GCHandle _pinnedUVArray;
 
