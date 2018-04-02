@@ -135,7 +135,6 @@ namespace UnityEngine.XR.iOS {
         }
 	};
 
-
     public struct UnityARHitTestResult
     {
         /**
@@ -392,6 +391,9 @@ namespace UnityEngine.XR.iOS {
 
 		[DllImport("__Internal")]
 		private static extern ARTextureHandles GetVideoTextureHandles();
+
+		[DllImport("__Internal")]
+		private static extern ARJoyStickData _GetARJoyStickData();
 
 		[DllImport("__Internal")]
 		private static extern float GetAmbientIntensity();
@@ -884,6 +886,17 @@ namespace UnityEngine.XR.iOS {
 #endif
 	    }
 		
+		public ARJoyStickData GetARJoyStickData()
+		{
+#if !UNITY_EDITOR
+			return _GetARJoyStickData();
+#else
+			var data = new ARJoyStickData();
+			data.error = true;
+			return data; 
+#endif
+		}
+
 		public ARTextureHandles GetARVideoTextureHandles()
 		{
 			return GetVideoTextureHandles ();

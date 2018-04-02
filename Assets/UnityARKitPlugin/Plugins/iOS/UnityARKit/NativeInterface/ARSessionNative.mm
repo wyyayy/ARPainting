@@ -1031,24 +1031,30 @@ extern "C" UnityARHitTestResult GetLastHitTestResult(int index)
 }
 
 // Must match ARHitTestResult in ARHitTestResult.cs
-extern "C" struct ARJoyStickData
-{
-    /// ScreenPos;
-    /// Size;
-};
-
-extern "C" ARJoyStickData _GetARJoyStickData ()
-{
-    ARJoyStickData data;
-    return data;
-}
-
 extern "C" void _SetVideoPixelBuffer (void* nativeSession, void* pYPixelBytes, void *pUVPixelBytes)
 {
     UnityARSession* session = (__bridge UnityARSession*)nativeSession;
     
     session->_videoPixelBuffer.pYPixelBytes = pYPixelBytes;
     session->_videoPixelBuffer.pUVPixelBytes = pUVPixelBytes;
+}
+
+extern "C" struct UnityARJoyStickData
+{
+    bool success;
+
+    /// In screen space
+    float screenX;
+    /// In screen space
+    float screenY;
+    /// In screen space
+    float size;
+};
+
+extern "C" UnityARJoyStickData _GetARJoyStickData ()
+{
+    UnityARJoyStickData data;
+    return data;
 }
 
 extern "C" UnityARTextureHandles GetVideoTextureHandles()
