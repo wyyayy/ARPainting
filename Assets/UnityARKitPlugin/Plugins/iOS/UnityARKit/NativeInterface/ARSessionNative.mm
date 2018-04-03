@@ -6,6 +6,9 @@
 
 struct VideoPixelBuffer
 {
+    int videoWidth;
+    int videoHeight;
+
     void* pYPixelBytes;
     void* pUVPixelBytes;
 };
@@ -1031,10 +1034,12 @@ extern "C" UnityARHitTestResult GetLastHitTestResult(int index)
 }
 
 // Must match ARHitTestResult in ARHitTestResult.cs
-extern "C" void _SetVideoPixelBuffer (void* nativeSession, void* pYPixelBytes, void *pUVPixelBytes)
+extern "C" void _SetVideoPixelBuffer (int videoWidth, int videoHeight, void* nativeSession, void* pYPixelBytes, void *pUVPixelBytes)
 {
     UnityARSession* session = (__bridge UnityARSession*)nativeSession;
     
+    session->_videoPixelBuffer.videoWidth = videoWidth;
+    session->_videoPixelBuffer.videoHeight = videoHeight;
     session->_videoPixelBuffer.pYPixelBytes = pYPixelBytes;
     session->_videoPixelBuffer.pUVPixelBytes = pUVPixelBytes;
 }
@@ -1051,9 +1056,29 @@ extern "C" struct UnityARJoyStickData
     float size;
 };
 
+UnityARJoyStickData _calculateData(const VideoPixelBuffer& videoPixelBuffer)
+{
+    int yWidth = videoPixelBuffer.videoWidth;
+    int yHeight = videoPixelBuffer.videoHeight;
+
+    int uvWidth = videoPixelBuffer.videoWidth / 2;
+    int uvHeight = videoPixelBuffer.videoHeight / 2;
+
+    int yStep = 6;
+    int yRowPtCount = yWidth / yStep;
+    int yColumnPtCount = yHeight / yStep;
+
+    int uvStep = yStep / 2;
+    int uvRowPtCount = yWidth / yStep;
+    int uvColumnPtCount = yHeight / yStep;
+            
+}
+
 extern "C" UnityARJoyStickData _GetARJoyStickData ()
 {
-    UnityARJoyStickData data;
+    UnityARSession* session = (__bridge UnityARSession*)nativeSession;
+        
+    UnityARJoyStickData data = _calculateData(session->_videoPixelBuffer);
     return data;
 }
 

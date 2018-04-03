@@ -79,8 +79,13 @@ namespace ARSDK
 
 		void _initialize(UnityARCamera camera)
 		{
-			int numYBytes = camera.videoParams.yWidth * camera.videoParams.yHeight;
-			int numUVBytes = camera.videoParams.yWidth * camera.videoParams.yHeight / 2; //quarter resolution, but two bytes per pixel
+			int yWidth = camera.videoParams.yWidth;
+			int yHeight = camera.videoParams.yHeight;
+			int uvWidth = yWidth / 2;
+			int uvHeight = yHeight / 2;
+			
+			int numYBytes = yWidth * yHeight;
+			int numUVBytes = numYBytes / 2; //quarter resolution, but two bytes per pixel
 			
 			_textureYBytes = new byte[numYBytes];
 			_textureUVBytes = new byte[numUVBytes];
@@ -90,12 +95,7 @@ namespace ARSDK
 
 			IntPtr yBytes = _pinByteArray(ref _pinnedYArray, _textureYBytes);
 			IntPtr uvBytes = _pinByteArray(ref _pinnedUVArray, _textureUVBytes);
-			_session.SetVideoPixelBuffer (yBytes, uvBytes);
-
-			int yWidth = camera.videoParams.yWidth;
-			int yHeight = camera.videoParams.yHeight;
-			int uvWidth = yWidth / 2;
-			int uvHeight = yHeight / 2;
+			_session.SetVideoPixelBuffer (yWidth, yHeight, yBytes, uvBytes);
 
 			_videoTextureY = new Texture2D (yWidth, yHeight, TextureFormat.R8, false, true);
 			_videoTextureCbCr = new Texture2D (uvWidth, uvHeight, TextureFormat.RG16, false, true);
