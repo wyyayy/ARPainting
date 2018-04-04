@@ -1046,6 +1046,14 @@ extern "C" void _SetVideoPixelBuffer (int videoWidth, int videoHeight, void* nat
 
 extern "C" struct VirtualMouseData
 {
+    VirtualMouseData()
+    {
+        this.success = false;
+        this.screenX = -1;
+        this.screenY = -1;
+        this.size = -1;
+    }
+
     bool success;
 
     /// In screen space
@@ -1055,6 +1063,23 @@ extern "C" struct VirtualMouseData
     /// In screen space
     float size;
 };
+
+#define BYTE unsigned char
+#define SHORT unsigned short
+
+#define COLOR_THRETHOD  10;
+
+bool _isColorEqual(int srcY, int srcCb, int srcCr, int destY, int destCb, int destCr)
+{
+    if( abs(srcY - destY) <  10 && abs(srcCb - destCb) <  10 && abs(srcCr - destCr) <  10 )
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    } 
+}
 
 VirtualMouseData _calculateData(const VideoPixelBuffer& videoPixelBuffer)
 {
@@ -1070,8 +1095,6 @@ VirtualMouseData _calculateData(const VideoPixelBuffer& videoPixelBuffer)
 
     int cbcrStep = yStep / 2;
 
-#define BYTE unsigned char
-#define SHORT unsigned short
     /// Find first point
     BYTE* pYCursor = (BYTE*)_videoPixelBuffer.pYPixelBytes;
     SHORT* pCbCrCursor = (SHORT*)_videoPixelBuffer.pYPixelBytes;
@@ -1083,6 +1106,7 @@ VirtualMouseData _calculateData(const VideoPixelBuffer& videoPixelBuffer)
     BYTE destCr;
 
     int index = 0;
+    bool found = false;
 
     for( ; i<totalSteps; ++index)
     {
@@ -1091,23 +1115,31 @@ VirtualMouseData _calculateData(const VideoPixelBuffer& videoPixelBuffer)
         BYTE cb = (cbcr & 0xFF00) >> 8; /// ???
         BYTE cr = cbcr & 0x00FF;
 
-        if(equalToColor(destY, destCb, destCr))
+        if(_isColorEqual(y, cb, cr, destY, destCb, destCr))
         {
+            found = true;
             break;
         }
 
         pYCursor += yStep;
         pCbCrCursor += cbcrStep;        
     }
-            
-#undef BYTE            
 
-    /// Convert index to row/column
+    VirtualMouseData mouseData;
 
+    if(found)
+    {
+        /// Convert index to row/column
+        int nRealIndex = index * yStep;
+        int row = nRealIndex / yWidth;
 
-    /// Flood fill to find all points, store the minX, maxX, minY, maxY
+        /// Flood fill to find all points, store the minX, maxX, minY, maxY
 
-    /// Find center
+        /// Find center
+
+    }
+
+    return mouseData;
 }
 
 extern "C" VirtualMouseData _GetMouseData ()
@@ -1117,6 +1149,9 @@ extern "C" VirtualMouseData _GetMouseData ()
     VirtualMouseData data = _calculateData(session->_videoPixelBuffer);
     return data;
 }
+
+#undef BYTE
+#undef SHORT
 
 extern "C" UnityARTextureHandles GetVideoTextureHandles()
 {
