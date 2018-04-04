@@ -1044,7 +1044,7 @@ extern "C" void _SetVideoPixelBuffer (int videoWidth, int videoHeight, void* nat
     session->_videoPixelBuffer.pUVPixelBytes = pUVPixelBytes;
 }
 
-extern "C" struct UnityARJoyStickData
+extern "C" struct VirtualMouseData
 {
     bool success;
 
@@ -1056,29 +1056,65 @@ extern "C" struct UnityARJoyStickData
     float size;
 };
 
-UnityARJoyStickData _calculateData(const VideoPixelBuffer& videoPixelBuffer)
+VirtualMouseData _calculateData(const VideoPixelBuffer& videoPixelBuffer)
 {
     int yWidth = videoPixelBuffer.videoWidth;
     int yHeight = videoPixelBuffer.videoHeight;
 
-    int uvWidth = videoPixelBuffer.videoWidth / 2;
-    int uvHeight = videoPixelBuffer.videoHeight / 2;
+    int cbcrWidth = videoPixelBuffer.videoWidth / 2;
+    int cbcrHeight = videoPixelBuffer.videoHeight / 2;
 
     int yStep = 6;
-    int yRowPtCount = yWidth / yStep;
-    int yColumnPtCount = yHeight / yStep;
+    int rowPtCount = yWidth / yStep;
+    int columnPtCount = yHeight / yStep;
 
-    int uvStep = yStep / 2;
-    int uvRowPtCount = yWidth / yStep;
-    int uvColumnPtCount = yHeight / yStep;
+    int cbcrStep = yStep / 2;
+
+#define BYTE unsigned char
+#define SHORT unsigned short
+    /// Find first point
+    BYTE* pYCursor = (BYTE*)_videoPixelBuffer.pYPixelBytes;
+    SHORT* pCbCrCursor = (SHORT*)_videoPixelBuffer.pYPixelBytes;
+
+    int totalSteps = (yWidth * yHeight) / yStep;
+
+    BYTE destY;
+    BYTE destCb;
+    BYTE destCr;
+
+    int index = 0;
+
+    for( ; i<totalSteps; ++index)
+    {
+        BYTE y = pYCursor[index];
+        SHORT cbcr = pCbCrCursor[index];
+        BYTE cb = (cbcr & 0xFF00) >> 8; /// ???
+        BYTE cr = cbcr & 0x00FF;
+
+        if(equalToColor(destY, destCb, destCr))
+        {
+            break;
+        }
+
+        pYCursor += yStep;
+        pCbCrCursor += cbcrStep;        
+    }
             
+#undef BYTE            
+
+    /// Convert index to row/column
+
+
+    /// Flood fill to find all points, store the minX, maxX, minY, maxY
+
+    /// Find center
 }
 
-extern "C" UnityARJoyStickData _GetARJoyStickData ()
+extern "C" VirtualMouseData _GetMouseData ()
 {
     UnityARSession* session = (__bridge UnityARSession*)nativeSession;
         
-    UnityARJoyStickData data = _calculateData(session->_videoPixelBuffer);
+    VirtualMouseData data = _calculateData(session->_videoPixelBuffer);
     return data;
 }
 

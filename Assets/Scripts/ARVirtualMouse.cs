@@ -6,7 +6,7 @@ using UnityEngine.XR.iOS;
 
 namespace ARSDK
 {
-    public class ARJoyStick : MonoBehaviour
+    public class ARVirtualMouse : MonoBehaviour
     {
         protected UnityARSessionNativeInterface _session;
 		
@@ -21,7 +21,7 @@ namespace ARSDK
         {
 			if(Input.GetMouseButtonDown(0))
 			{
-				ARJoyStickData data = _session.GetARJoyStickData();
+				VirtualMouseData data = _session.GetVirtualMouseData();
 				Debug.Log("JoyStickData, error:" + data.error + ", size: " + data.size + ", screenX: " + data.screenX + ", screenY: " + data.screenY);				
 			}
         }

@@ -2,7 +2,7 @@
 
 namespace UnityEngine.XR.iOS
 {
-	public struct ARJoyStickData
+	public struct VirtualMouseData
 	{
 		public Boolean error;
 		

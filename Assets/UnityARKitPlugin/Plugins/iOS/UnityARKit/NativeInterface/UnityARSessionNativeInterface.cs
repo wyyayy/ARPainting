@@ -393,7 +393,7 @@ namespace UnityEngine.XR.iOS {
 		private static extern ARTextureHandles GetVideoTextureHandles();
 
 		[DllImport("__Internal")]
-		private static extern ARJoyStickData _GetARJoyStickData();
+		private static extern VirtualMouseData _GetVirtualMouseData();
 
 		[DllImport("__Internal")]
 		private static extern float GetAmbientIntensity();
@@ -886,12 +886,12 @@ namespace UnityEngine.XR.iOS {
 #endif
 	    }
 		
-		public ARJoyStickData GetARJoyStickData()
+		public VirtualMouseData GetVirtualMouseData()
 		{
 #if !UNITY_EDITOR
-			return _GetARJoyStickData();
+			return GetVirtualMouseData();
 #else
-			var data = new ARJoyStickData();
+			var data = new VirtualMouseData();
 			data.error = true;
 			return data; 
 #endif
