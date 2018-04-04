@@ -1069,6 +1069,9 @@ extern "C" struct VirtualMouseData
 
 #define COLOR_THRETHOD  10;
 
+///...use a byte array to optimize
+std::set<unsigned int> _visitedPts;
+
 bool _isColorEqual(int srcY, int srcCb, int srcCr, int destY, int destCb, int destCr)
 {
     if( abs(srcY - destY) <  10 && abs(srcCb - destCb) <  10 && abs(srcCr - destCr) <  10 )
@@ -1131,11 +1134,15 @@ VirtualMouseData _calculateData(const VideoPixelBuffer& videoPixelBuffer)
     {
         /// Convert index to row/column
         int nRealIndex = index * yStep;
+        
         int row = nRealIndex / yWidth;
+        int column = nRealIndex % yWidth;
 
         /// Flood fill to find all points, store the minX, maxX, minY, maxY
 
+
         /// Find center
+
 
     }
 
