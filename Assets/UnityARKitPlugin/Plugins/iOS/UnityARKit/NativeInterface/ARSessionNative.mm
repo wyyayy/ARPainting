@@ -1,5 +1,6 @@
 #import <ARKit/ARKit.h>
 #import <CoreVideo/CoreVideo.h>
+#include <set>
 #include "stdlib.h"
 #include "UnityAppController.h"
 
@@ -1034,7 +1035,7 @@ extern "C" UnityARHitTestResult GetLastHitTestResult(int index)
 }
 
 // Must match ARHitTestResult in ARHitTestResult.cs
-extern "C" void _SetVideoPixelBuffer (int videoWidth, int videoHeight, void* nativeSession, void* pYPixelBytes, void *pUVPixelBytes)
+extern "C" void _SetVideoPixelBuffer (void* nativeSession, int videoWidth, int videoHeight, void* pYPixelBytes, void *pUVPixelBytes)
 {
     UnityARSession* session = (__bridge UnityARSession*)nativeSession;
     
@@ -1046,13 +1047,13 @@ extern "C" void _SetVideoPixelBuffer (int videoWidth, int videoHeight, void* nat
 
 extern "C" struct VirtualMouseData
 {
-    VirtualMouseData()
-    {
-        this.success = false;
-        this.screenX = -1;
-        this.screenY = -1;
-        this.size = -1;
-    }
+    // VirtualMouseData()
+    // {
+    //     this->success = false;
+    //     this->screenX = -1;
+    //     this->screenY = -1;
+    //     this->size = -1;
+    // }
 
     bool success;
 
@@ -1099,8 +1100,8 @@ VirtualMouseData _calculateData(const VideoPixelBuffer& videoPixelBuffer)
     int cbcrStep = yStep / 2;
 
     /// Find first point
-    BYTE* pYCursor = (BYTE*)_videoPixelBuffer.pYPixelBytes;
-    SHORT* pCbCrCursor = (SHORT*)_videoPixelBuffer.pYPixelBytes;
+    BYTE* pYCursor = (BYTE*)videoPixelBuffer.pYPixelBytes;
+    SHORT* pCbCrCursor = (SHORT*)videoPixelBuffer.pYPixelBytes;
 
     int totalSteps = (yWidth * yHeight) / yStep;
 
@@ -1111,7 +1112,7 @@ VirtualMouseData _calculateData(const VideoPixelBuffer& videoPixelBuffer)
     int index = 0;
     bool found = false;
 
-    for( ; i<totalSteps; ++index)
+    for( ; index < totalSteps; ++index)
     {
         BYTE y = pYCursor[index];
         SHORT cbcr = pCbCrCursor[index];
@@ -1129,6 +1130,10 @@ VirtualMouseData _calculateData(const VideoPixelBuffer& videoPixelBuffer)
     }
 
     VirtualMouseData mouseData;
+    mouseData.success = true;
+    mouseData.screenX = -2.0f;
+    mouseData.screenY = -3.0f;
+    mouseData.size = -4.0f;
 
     if(found)
     {
@@ -1149,7 +1154,7 @@ VirtualMouseData _calculateData(const VideoPixelBuffer& videoPixelBuffer)
     return mouseData;
 }
 
-extern "C" VirtualMouseData _GetMouseData ()
+extern "C" VirtualMouseData _GetVirtualMouseData (void* nativeSession)
 {
     UnityARSession* session = (__bridge UnityARSession*)nativeSession;
         

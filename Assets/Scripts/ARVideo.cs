@@ -132,7 +132,7 @@ namespace ARSDK
 			_pinnedYArray.Free();
 			_pinnedUVArray.Free();
 
-			_session.SetVideoPixelBuffer(IntPtr.Zero, IntPtr.Zero);
+			_session.SetVideoPixelBuffer(-1, -1, IntPtr.Zero, IntPtr.Zero);
 
 			if(null != _commandBuffer) _commandBuffer.Dispose();
 		}

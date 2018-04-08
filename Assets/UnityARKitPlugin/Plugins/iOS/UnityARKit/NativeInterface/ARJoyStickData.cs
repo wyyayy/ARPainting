@@ -4,7 +4,7 @@ namespace UnityEngine.XR.iOS
 {
 	public struct VirtualMouseData
 	{
-		public Boolean error;
+		public Boolean success;
 		
 		public float screenX;
 		public float screenY;

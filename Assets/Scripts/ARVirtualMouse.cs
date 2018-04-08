@@ -22,7 +22,7 @@ namespace ARSDK
 			if(Input.GetMouseButtonDown(0))
 			{
 				VirtualMouseData data = _session.GetVirtualMouseData();
-				Debug.Log("JoyStickData, error:" + data.error + ", size: " + data.size + ", screenX: " + data.screenX + ", screenY: " + data.screenY);				
+				Debug.Log("JoyStickData, error:" + data.success + ", size: " + data.size + ", screenX: " + data.screenX + ", screenY: " + data.screenY);				
 			}
         }
     }

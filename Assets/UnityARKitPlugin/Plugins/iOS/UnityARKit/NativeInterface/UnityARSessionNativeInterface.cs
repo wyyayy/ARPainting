@@ -335,7 +335,7 @@ namespace UnityEngine.XR.iOS {
 	    private static UnityARCamera s_Camera;
 		
 	    [DllImport("__Internal")]
-        private static extern void _SetVideoPixelBuffer(int videoWidth, int videoHeight, IntPtr nativeSession, IntPtr yBytes, IntPtr uvBytes);
+        private static extern void _SetVideoPixelBuffer(IntPtr nativeSession, int videoWidth, int videoHeight, IntPtr yBytes, IntPtr uvBytes);
 
 	    [DllImport("__Internal")]
         private static extern IntPtr unity_CreateNativeARSession();
@@ -393,7 +393,7 @@ namespace UnityEngine.XR.iOS {
 		private static extern ARTextureHandles GetVideoTextureHandles();
 
 		[DllImport("__Internal")]
-		private static extern VirtualMouseData _GetVirtualMouseData();
+		private static extern VirtualMouseData _GetVirtualMouseData(IntPtr nativeSession);
 
 		[DllImport("__Internal")]
 		private static extern float GetAmbientIntensity();
@@ -552,7 +552,7 @@ namespace UnityEngine.XR.iOS {
 		public void SetVideoPixelBuffer(int videoWidth, int videoHeight, IntPtr pYByteArray, IntPtr pUVByteArray)
 		{
 #if !UNITY_EDITOR
-			_SetVideoPixelBuffer(videoWidth, wideoHeight, m_NativeARSession, pYByteArray, pUVByteArray);
+			_SetVideoPixelBuffer(m_NativeARSession, videoWidth, videoHeight, pYByteArray, pUVByteArray);
 #endif
 		}
 
@@ -889,10 +889,10 @@ namespace UnityEngine.XR.iOS {
 		public VirtualMouseData GetVirtualMouseData()
 		{
 #if !UNITY_EDITOR
-			return GetVirtualMouseData();
+			return _GetVirtualMouseData(m_NativeARSession);
 #else
 			var data = new VirtualMouseData();
-			data.error = true;
+			data.success = true;
 			return data; 
 #endif
 		}
