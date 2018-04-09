@@ -1073,12 +1073,56 @@ extern "C" struct VirtualMouseData
 ///...use a byte array to optimize
 std::set<unsigned int> _visitedPts;
 
-bool _isColorEqual(int srcY, int srcCb, int srcCr, int destY, int destCb, int destCr)
+struct RGB
 {
-    if( abs(srcY - destY) <  10 && abs(srcCb - destCb) <  10 && abs(srcCr - destCr) <  10 )
-    {
-        return true;
-    }
+	unsigned char R;
+	unsigned char G;
+	unsigned char B;
+};
+
+struct YCbCr
+{
+	float Y;
+	float Cb;
+	float Cr;
+};
+
+static float Min(float a, float b) { return a <= b ? a : b; }
+static float Max(float a, float b) { return a >= b ? a : b; }
+
+struct RGB YCbCrToRGB(struct YCbCr ycbcr) 
+{
+	float r = Max(0.0f, Min(1.0f, (float)(ycbcr.Y + 0.0000 * ycbcr.Cb + 1.4022 * ycbcr.Cr)));
+	float g = Max(0.0f, Min(1.0f, (float)(ycbcr.Y - 0.3456 * ycbcr.Cb - 0.7145 * ycbcr.Cr)));
+	float b = Max(0.0f, Min(1.0f, (float)(ycbcr.Y + 1.7710 * ycbcr.Cb + 0.0000 * ycbcr.Cr)));
+
+	struct RGB rgb;
+	rgb.R = r * 255;
+	rgb.G = g * 255;
+	rgb.B = b * 255;
+
+	return rgb;
+}
+
+struct YCbCr RGBToYCbCr(struct RGB rgb) 
+{
+	float fr = (float)rgb.R / 255;
+	float fg = (float)rgb.G / 255;
+	float fb = (float)rgb.B / 255;
+
+	struct YCbCr ycbcr;
+	ycbcr.Y = (float)(0.2989 * fr + 0.5866 * fg + 0.1145 * fb);
+	ycbcr.Cb = (float)(-0.1687 * fr - 0.3313 * fg + 0.5000 * fb);
+	ycbcr.Cr = (float)(0.5000 * fr - 0.4184 * fg - 0.0816 * fb);
+
+	return ycbcr;
+}
+
+bool _isColorEqual(const YCbCr& srcColor, const YCbCr& destColor)
+{
+    if( abs(srcColor.Y - destColor.Y) <  0.1f 
+        && abs(srcColor.Cb - destColor.Cb) <  0.1f 
+        && abs(srcColor.Cr - destColor.Cr) <  0.1f ) return true;
     else
     {
         return false;
@@ -1105,9 +1149,8 @@ VirtualMouseData _calculateData(const VideoPixelBuffer& videoPixelBuffer)
 
     int totalSteps = (yWidth * yHeight) / yStep;
 
-    BYTE destY;
-    BYTE destCb;
-    BYTE destCr;
+    RGB rgb = {255, 0, 0};
+    YCbCr destColor = RGBToYCbCr(rgb);
 
     int index = 0;
     bool found = false;
@@ -1119,7 +1162,8 @@ VirtualMouseData _calculateData(const VideoPixelBuffer& videoPixelBuffer)
         BYTE cb = (cbcr & 0xFF00) >> 8; /// ???
         BYTE cr = cbcr & 0x00FF;
 
-        if(_isColorEqual(y, cb, cr, destY, destCb, destCr))
+        YCbCr srcColor = { y /255.0f, cb / 255.0f, cr / 255.0f };
+        if(_isColorEqual(srcColor, destColor))
         {
             found = true;
             break;
