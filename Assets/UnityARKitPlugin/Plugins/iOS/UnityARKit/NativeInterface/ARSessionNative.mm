@@ -9,7 +9,7 @@ struct VideoPixelBuffer
 {
     int videoWidth;
     int videoHeight;
-
+    
     void* pYPixelBytes;
     void* pUVPixelBytes;
 };
@@ -57,7 +57,7 @@ typedef struct
     UnityARPlaneDetection planeDetection;
     uint32_t getPointCloudData;
     uint32_t enableLightEstimation;
-
+    
 } ARKitWorldTrackingSessionConfiguration;
 
 typedef struct
@@ -72,7 +72,7 @@ enum UnityARSessionRunOptions
     UnityARSessionRunOptionsNone = 0,
     UnityARSessionRunOptionResetTracking           = (1 << 0),
     UnityARSessionRunOptionRemoveExistingAnchors   = (1 << 1)
-
+    
 };
 
 typedef struct
@@ -300,19 +300,19 @@ inline void ARKitMatrixToUnityARMatrix4x4(const matrix_float4x4& matrixIn, Unity
     matrixOut->column0.y = c0.y;
     matrixOut->column0.z = c0.z;
     matrixOut->column0.w = c0.w;
-
+    
     vector_float4 c1 = matrixIn.columns[1];
     matrixOut->column1.x = c1.x;
     matrixOut->column1.y = c1.y;
     matrixOut->column1.z = c1.z;
     matrixOut->column1.w = c1.w;
-
+    
     vector_float4 c2 = matrixIn.columns[2];
     matrixOut->column2.x = c2.x;
     matrixOut->column2.y = c2.y;
     matrixOut->column2.z = c2.z;
     matrixOut->column2.w = c2.w;
-
+    
     vector_float4 c3 = matrixIn.columns[3];
     matrixOut->column3.x = c3.x;
     matrixOut->column3.y = c3.y;
@@ -358,7 +358,7 @@ inline void UnityARMatrix4x4FromCGAffineTransform(UnityARMatrix4x4& outMatrix, C
         outMatrix.column1.y = -displayTransform.d;
         outMatrix.column1.z = 1.0f - displayTransform.ty;
         outMatrix.column2.z = 1.0f;
-        outMatrix.column3.w = 1.0f; 
+        outMatrix.column3.w = 1.0f;
     }
     else
     {
@@ -409,9 +409,9 @@ inline void UnityLightDataFromARFrame(UnityLightData& lightData, ARFrame *arFram
             lightData.arLightingType = DirectionalLightEstimate;
             ARDirectionalLightEstimate *dirLightEst = (ARDirectionalLightEstimate *) arFrame.lightEstimate;
             lightData.arDirectionalLightEstimate.sphericalHarmonicsCoefficients = (float *) dirLightEst.sphericalHarmonicsCoefficients.bytes;
-
+            
             //[dirLightEst.sphericalHarmonicsCoefficients getBytes:lightData.arDirectionalLightEstimate.sphericalHarmonicsCoefficients length:sizeof(float)*27 ];
-
+            
             UnityARVector4 dirAndIntensity;
             dirAndIntensity.x = dirLightEst.primaryLightDirection.x;
             dirAndIntensity.y = dirLightEst.primaryLightDirection.y;
@@ -432,9 +432,9 @@ inline void UnityLightDataFromARFrame(UnityLightData& lightData, ARFrame *arFram
 
 @protocol UnityARAnchorEventDispatcher
 @required
-    -(void)sendAnchorAddedEvent:(ARAnchor*)anchor;
-    -(void)sendAnchorRemovedEvent:(ARAnchor*)anchor;
-    -(void)sendAnchorUpdatedEvent:(ARAnchor*)anchor;
+-(void)sendAnchorAddedEvent:(ARAnchor*)anchor;
+-(void)sendAnchorRemovedEvent:(ARAnchor*)anchor;
+-(void)sendAnchorUpdatedEvent:(ARAnchor*)anchor;
 @end
 
 @interface UnityARAnchorCallbackWrapper : NSObject <UnityARAnchorEventDispatcher>
@@ -448,26 +448,26 @@ inline void UnityLightDataFromARFrame(UnityLightData& lightData, ARFrame *arFram
 
 @implementation UnityARAnchorCallbackWrapper
 
-    -(void)sendAnchorAddedEvent:(ARAnchor*)anchor
-    {
-        UnityARAnchorData data;
-        UnityARAnchorDataFromARAnchorPtr(data, (ARPlaneAnchor*)anchor);
-       _anchorAddedCallback(data);
-    }
+-(void)sendAnchorAddedEvent:(ARAnchor*)anchor
+{
+    UnityARAnchorData data;
+    UnityARAnchorDataFromARAnchorPtr(data, (ARPlaneAnchor*)anchor);
+    _anchorAddedCallback(data);
+}
 
-    -(void)sendAnchorRemovedEvent:(ARAnchor*)anchor
-    {
-        UnityARAnchorData data;
-        UnityARAnchorDataFromARAnchorPtr(data, (ARPlaneAnchor*)anchor);
-       _anchorRemovedCallback(data);
-    }
+-(void)sendAnchorRemovedEvent:(ARAnchor*)anchor
+{
+    UnityARAnchorData data;
+    UnityARAnchorDataFromARAnchorPtr(data, (ARPlaneAnchor*)anchor);
+    _anchorRemovedCallback(data);
+}
 
-    -(void)sendAnchorUpdatedEvent:(ARAnchor*)anchor
-    {
-        UnityARAnchorData data;
-        UnityARAnchorDataFromARAnchorPtr(data, (ARPlaneAnchor*)anchor);
-       _anchorUpdatedCallback(data);
-    }
+-(void)sendAnchorUpdatedEvent:(ARAnchor*)anchor
+{
+    UnityARAnchorData data;
+    UnityARAnchorDataFromARAnchorPtr(data, (ARPlaneAnchor*)anchor);
+    _anchorUpdatedCallback(data);
+}
 
 @end
 
@@ -482,26 +482,26 @@ inline void UnityLightDataFromARFrame(UnityLightData& lightData, ARFrame *arFram
 
 @implementation UnityARUserAnchorCallbackWrapper
 
-    -(void)sendAnchorAddedEvent:(ARAnchor*)anchor
-    {
-        UnityARUserAnchorData data;
-        UnityARUserAnchorDataFromARAnchorPtr(data, anchor);
-       _anchorAddedCallback(data);
-    }
+-(void)sendAnchorAddedEvent:(ARAnchor*)anchor
+{
+    UnityARUserAnchorData data;
+    UnityARUserAnchorDataFromARAnchorPtr(data, anchor);
+    _anchorAddedCallback(data);
+}
 
-    -(void)sendAnchorRemovedEvent:(ARAnchor*)anchor
-    {
-        UnityARUserAnchorData data;
-        UnityARUserAnchorDataFromARAnchorPtr(data, anchor);
-       _anchorRemovedCallback(data);
-    }
+-(void)sendAnchorRemovedEvent:(ARAnchor*)anchor
+{
+    UnityARUserAnchorData data;
+    UnityARUserAnchorDataFromARAnchorPtr(data, anchor);
+    _anchorRemovedCallback(data);
+}
 
-    -(void)sendAnchorUpdatedEvent:(ARAnchor*)anchor
-    {
-        UnityARUserAnchorData data;
-        UnityARUserAnchorDataFromARAnchorPtr(data, anchor);
-       _anchorUpdatedCallback(data);
-    }
+-(void)sendAnchorUpdatedEvent:(ARAnchor*)anchor
+{
+    UnityARUserAnchorData data;
+    UnityARUserAnchorDataFromARAnchorPtr(data, anchor);
+    _anchorUpdatedCallback(data);
+}
 
 @end
 
@@ -556,14 +556,14 @@ static UnityPixelBuffer s_UnityPixelBuffers;
     UNITY_AR_SESSION_VOID_CALLBACK _arSessionInterrupted;
     UNITY_AR_SESSION_VOID_CALLBACK _arSessionInterruptionEnded;
     UNITY_AR_SESSION_TRACKING_CHANGED _arSessionTrackingChanged;
-
+    
     NSMutableDictionary* _classToCallbackMap;
     
     id <MTLDevice> _device;
     CVMetalTextureCacheRef _textureCache;
     BOOL _getPointCloudData;
     BOOL _getLightEstimation;
-
+    
     VideoPixelBuffer _videoPixelBuffer;
 }
 @end
@@ -602,18 +602,18 @@ static CGAffineTransform s_CurAffineTransform;
     s_TrackingQuality = (int)frame.camera.trackingState;
     s_PointCloud = frame.rawFeaturePoints.points;
     s_PointCloudSize = frame.rawFeaturePoints.count;
-
+    
     UIInterfaceOrientation orient = [[UIApplication sharedApplication] statusBarOrientation];
-
+    
     CGRect nativeBounds = [[UIScreen mainScreen] nativeBounds];
     CGSize nativeSize = GetAppController().rootView.bounds.size;
     UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
     s_CurAffineTransform = CGAffineTransformInvert([frame displayTransformForOrientation:orientation viewportSize:nativeSize]);
-
+    
     UnityARCamera unityARCamera;
-
+    
     GetUnityARCameraDataFromCamera(unityARCamera, frame.camera, _getPointCloudData);
-
+    
     
     CVPixelBufferRef pixelBuffer = frame.capturedImage;
     
@@ -630,7 +630,7 @@ static CGAffineTransform s_CurAffineTransform;
     {
         UnityLightDataFromARFrame(unityARCamera.lightData, frame);
     }
-
+    
     unityARCamera.videoParams.yWidth = (uint32_t)imageWidth;
     unityARCamera.videoParams.yHeight = (uint32_t)imageHeight;
     unityARCamera.videoParams.cvPixelBufferPtr = (void *) pixelBuffer;
@@ -638,13 +638,13 @@ static CGAffineTransform s_CurAffineTransform;
     memset(&displayTransform, 0, sizeof(UnityARMatrix4x4));
     UnityARMatrix4x4FromCGAffineTransform(displayTransform, s_CurAffineTransform, UIInterfaceOrientationIsLandscape(orientation));
     unityARCamera.displayTransform = displayTransform;
-
+    
     if (_frameCallback != NULL)
     {
-
+        
         matrix_float4x4 rotatedMatrix = matrix_identity_float4x4;
         unityARCamera.videoParams.screenOrientation = 3;
-
+        
         // rotation  matrix
         // [ cos    -sin]
         // [ sin     cos]
@@ -673,11 +673,11 @@ static CGAffineTransform s_CurAffineTransform;
             default:
                 break;
         }
-
+        
         matrix_float4x4 matrix = matrix_multiply(frame.camera.transform, rotatedMatrix);
-
+        
         ARKitMatrixToUnityARMatrix4x4(matrix, &unityARCamera.worldTransform);
-
+        
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             _frameCallback(unityARCamera);
         });
@@ -686,22 +686,22 @@ static CGAffineTransform s_CurAffineTransform;
     if (CVPixelBufferGetPlaneCount(pixelBuffer) < 2 || CVPixelBufferGetPixelFormatType(pixelBuffer) != kCVPixelFormatType_420YpCbCr8BiPlanarFullRange) {
         return;
     }
-
+    
     if(nullptr == _videoPixelBuffer.pYPixelBytes || nullptr == _videoPixelBuffer.pUVPixelBytes) return;
     
     /// Grab pixels
     CVPixelBufferLockBaseAddress(pixelBuffer, kCVPixelBufferLock_ReadOnly);
-        
+    
     assert (_videoPixelBuffer.pYPixelBytes != nullptr);
     unsigned long numBytes = CVPixelBufferGetBytesPerRowOfPlane(pixelBuffer, 0) * CVPixelBufferGetHeightOfPlane(pixelBuffer,0);
     void* baseAddress = CVPixelBufferGetBaseAddressOfPlane(pixelBuffer,0);
     memcpy(_videoPixelBuffer.pYPixelBytes, baseAddress, numBytes);
-        
+    
     assert (_videoPixelBuffer.pUVPixelBytes != nullptr);
     numBytes = CVPixelBufferGetBytesPerRowOfPlane(pixelBuffer, 1) * CVPixelBufferGetHeightOfPlane(pixelBuffer,1);
     baseAddress = CVPixelBufferGetBaseAddressOfPlane(pixelBuffer,1);
     memcpy(_videoPixelBuffer.pUVPixelBytes, baseAddress, numBytes);
-        
+    
     CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
 }
 
@@ -720,12 +720,12 @@ static CGAffineTransform s_CurAffineTransform;
 
 - (void)session:(ARSession *)session didUpdateAnchors:(NSArray<ARAnchor*>*)anchors
 {
-   [self sendAnchorUpdatedEventToUnity:anchors];
+    [self sendAnchorUpdatedEventToUnity:anchors];
 }
 
 - (void)session:(ARSession *)session didRemoveAnchors:(NSArray<ARAnchor*>*)anchors
 {
-   [self sendAnchorRemovedEventToUnity:anchors];
+    [self sendAnchorRemovedEventToUnity:anchors];
 }
 
 - (void) sendAnchorAddedEventToUnity:(NSArray<ARAnchor*>*)anchors
@@ -752,7 +752,7 @@ static CGAffineTransform s_CurAffineTransform;
     if (_arSessionInterrupted != NULL)
     {
         _arSessionInterrupted();
-
+        
     }
 }
 
@@ -804,16 +804,16 @@ extern "C" void session_SetSessionCallbacks(const void* session, UNITY_AR_FRAME_
                                             UNITY_AR_SESSION_TRACKING_CHANGED trackingChanged)
 {
     UnityARSession* nativeSession = (__bridge UnityARSession*)session;
-    nativeSession->_frameCallback = frameCallback; 
+    nativeSession->_frameCallback = frameCallback;
     nativeSession->_arSessionFailedCallback = sessionFailed;
     nativeSession->_arSessionInterrupted = sessionInterrupted;
     nativeSession->_arSessionInterruptionEnded = sessionInterruptionEnded;
     nativeSession->_arSessionTrackingChanged = trackingChanged;
 }
 
-extern "C" void session_SetPlaneAnchorCallbacks(const void* session, UNITY_AR_ANCHOR_CALLBACK anchorAddedCallback, 
-                                            UNITY_AR_ANCHOR_CALLBACK anchorUpdatedCallback, 
-                                            UNITY_AR_ANCHOR_CALLBACK anchorRemovedCallback)
+extern "C" void session_SetPlaneAnchorCallbacks(const void* session, UNITY_AR_ANCHOR_CALLBACK anchorAddedCallback,
+                                                UNITY_AR_ANCHOR_CALLBACK anchorUpdatedCallback,
+                                                UNITY_AR_ANCHOR_CALLBACK anchorRemovedCallback)
 {
     UnityARSession* nativeSession = (__bridge UnityARSession*)session;
     UnityARAnchorCallbackWrapper* anchorCallbacks = [[UnityARAnchorCallbackWrapper alloc] init];
@@ -823,9 +823,9 @@ extern "C" void session_SetPlaneAnchorCallbacks(const void* session, UNITY_AR_AN
     [nativeSession->_classToCallbackMap setObject:anchorCallbacks forKey:[ARPlaneAnchor class]];
 }
 
-extern "C" void session_SetUserAnchorCallbacks(const void* session, UNITY_AR_USER_ANCHOR_CALLBACK userAnchorAddedCallback, 
-                                            UNITY_AR_USER_ANCHOR_CALLBACK userAnchorUpdatedCallback, 
-                                            UNITY_AR_USER_ANCHOR_CALLBACK userAnchorRemovedCallback)
+extern "C" void session_SetUserAnchorCallbacks(const void* session, UNITY_AR_USER_ANCHOR_CALLBACK userAnchorAddedCallback,
+                                               UNITY_AR_USER_ANCHOR_CALLBACK userAnchorUpdatedCallback,
+                                               UNITY_AR_USER_ANCHOR_CALLBACK userAnchorRemovedCallback)
 {
     UnityARSession* nativeSession = (__bridge UnityARSession*)session;
     UnityARUserAnchorCallbackWrapper* userAnchorCallbacks = [[UnityARUserAnchorCallbackWrapper alloc] init];
@@ -1012,14 +1012,14 @@ extern "C" int HitTest(void* nativeSession, CGPoint point, ARHitTestResultType t
     UnityARSession* session = (__bridge UnityARSession*)nativeSession;
     point = CGPointApplyAffineTransform(CGPointMake(point.x, 1.0f - point.y), CGAffineTransformInvert(CGAffineTransformInvert(s_CurAffineTransform)));
     s_LastHitTestResults = [session->_session.currentFrame hitTest:point types:types];
-
+    
     return (int)[s_LastHitTestResults count];
 }
 extern "C" UnityARHitTestResult GetLastHitTestResult(int index)
 {
     UnityARHitTestResult unityResult;
     memset(&unityResult, 0, sizeof(UnityARHitTestResult));
-
+    
     if (s_LastHitTestResults != nil && index >= 0 && index < [s_LastHitTestResults count])
     {
         ARHitTestResult* hitResult = s_LastHitTestResults[index];
@@ -1030,7 +1030,7 @@ extern "C" UnityARHitTestResult GetLastHitTestResult(int index)
         unityResult.anchorPtr = (void*)[hitResult.anchor.identifier.UUIDString UTF8String];
         unityResult.isValid = true;
     }
-
+    
     return unityResult;
 }
 
@@ -1054,9 +1054,9 @@ extern "C" struct VirtualMouseData
     //     this->screenY = -1;
     //     this->size = -1;
     // }
-
+    
     bool success;
-
+    
     /// In screen space
     float screenX;
     /// In screen space
@@ -1075,110 +1075,125 @@ std::set<unsigned int> _visitedPts;
 
 struct RGB
 {
-	unsigned char R;
-	unsigned char G;
-	unsigned char B;
+//    unsigned char R;
+//    unsigned char G;
+//    unsigned char B;
+    int R;
+    int G;
+    int B;
+
 };
 
 struct YCbCr
 {
-	float Y;
-	float Cb;
-	float Cr;
+    float Y;
+    float Cb;
+    float Cr;
 };
 
 static float Min(float a, float b) { return a <= b ? a : b; }
 static float Max(float a, float b) { return a >= b ? a : b; }
 
-struct RGB YCbCrToRGB(struct YCbCr ycbcr) 
+struct RGB YCbCrToRGB(struct YCbCr ycbcr)
 {
-	float r = Max(0.0f, Min(1.0f, (float)(ycbcr.Y + 0.0000 * ycbcr.Cb + 1.4022 * ycbcr.Cr)));
-	float g = Max(0.0f, Min(1.0f, (float)(ycbcr.Y - 0.3456 * ycbcr.Cb - 0.7145 * ycbcr.Cr)));
-	float b = Max(0.0f, Min(1.0f, (float)(ycbcr.Y + 1.7710 * ycbcr.Cb + 0.0000 * ycbcr.Cr)));
-
-	struct RGB rgb;
-	rgb.R = r * 255;
-	rgb.G = g * 255;
-	rgb.B = b * 255;
-
-	return rgb;
+     /// Need a invert matrix to do RGB2CbCr
+//    const float4x4 ycbcrToRGBTransform = float4x4(
+//                                 float4(1.0, +0.0000, +1.4020, -0.7010),
+//                                 float4(1.0, -0.3441, -0.7141, +0.5291),
+//                                 float4(1.0, +1.7720, +0.0000, -0.8860),
+//                                 float4(0.0, +0.0000, +0.0000, +1.0000)
+    
+    float r = ycbcr.Y                      + 1.4020f * ycbcr.Cr - 0.7010f;
+    float g = ycbcr.Y - 0.3441f * ycbcr.Cb - 0.7141f * ycbcr.Cr + 0.5291f;
+    float b = ycbcr.Y + 1.7720f * ycbcr.Cb - 0.8860f;
+    
+    struct RGB rgb;
+    rgb.R = r * 255;
+    rgb.G = g * 255;
+    rgb.B = b * 255;
+    
+    return rgb;
 }
 
-struct YCbCr RGBToYCbCr(struct RGB rgb) 
+struct YCbCr RGBToYCbCr(struct RGB rgb)
 {
-	float fr = (float)rgb.R / 255;
-	float fg = (float)rgb.G / 255;
-	float fb = (float)rgb.B / 255;
-
-	struct YCbCr ycbcr;
-	ycbcr.Y = (float)(0.2989 * fr + 0.5866 * fg + 0.1145 * fb);
-	ycbcr.Cb = (float)(-0.1687 * fr - 0.3313 * fg + 0.5000 * fb);
-	ycbcr.Cr = (float)(0.5000 * fr - 0.4184 * fg - 0.0816 * fb);
-
-	return ycbcr;
+    float fr = (float)rgb.R / 255;
+    float fg = (float)rgb.G / 255;
+    float fb = (float)rgb.B / 255;
+    
+    struct YCbCr ycbcr;
+    ycbcr.Y = (float)(0.2989 * fr + 0.5866 * fg + 0.1145 * fb);
+    ycbcr.Cb = (float)(-0.1687 * fr - 0.3313 * fg + 0.5000 * fb);
+    ycbcr.Cr = (float)(0.5000 * fr - 0.4184 * fg - 0.0816 * fb);
+    
+    return ycbcr;
 }
 
 bool _isColorEqual(const YCbCr& srcColor, const YCbCr& destColor)
 {
-    if( abs(srcColor.Y - destColor.Y) <  0.1f 
-        && abs(srcColor.Cb - destColor.Cb) <  0.1f 
-        && abs(srcColor.Cr - destColor.Cr) <  0.1f ) return true;
+    if( abs(srcColor.Y - destColor.Y) <  0.1f
+       && abs(srcColor.Cb - destColor.Cb) <  0.1f
+       && abs(srcColor.Cr - destColor.Cr) <  0.1f ) return true;
     else
     {
         return false;
-    } 
+    }
 }
 
 VirtualMouseData _calculateData(const VideoPixelBuffer& videoPixelBuffer)
 {
     int yWidth = videoPixelBuffer.videoWidth;
     int yHeight = videoPixelBuffer.videoHeight;
-
+    
     int cbcrWidth = videoPixelBuffer.videoWidth / 2;
     int cbcrHeight = videoPixelBuffer.videoHeight / 2;
-
+    
     int yStep = 6;
     int rowPtCount = yWidth / yStep;
     int columnPtCount = yHeight / yStep;
-
+    
     int cbcrStep = yStep / 2;
-
+    
     /// Find first point
     BYTE* pYCursor = (BYTE*)videoPixelBuffer.pYPixelBytes;
-    SHORT* pCbCrCursor = (SHORT*)videoPixelBuffer.pYPixelBytes;
-
+    SHORT* pCbCrCursor = (SHORT*)videoPixelBuffer.pUVPixelBytes;
+    
     int totalSteps = (yWidth * yHeight) / yStep;
-
+    
     RGB rgb = {255, 0, 0};
     YCbCr destColor = RGBToYCbCr(rgb);
-
+    
     int index = 0;
     bool found = false;
-
+    
     for( ; index < totalSteps; ++index)
     {
-        BYTE y = pYCursor[index];
-        SHORT cbcr = pCbCrCursor[index];
-        BYTE cb = (cbcr & 0xFF00) >> 8; /// ???
-        BYTE cr = cbcr & 0x00FF;
-
+        int y = pYCursor[index];
+        int cbcr = pCbCrCursor[index];
+        int cr = (cbcr & 0xFF00) >> 8; /// ???
+        int cb = cbcr & 0x00FF;
+        
         YCbCr srcColor = { y /255.0f, cb / 255.0f, cr / 255.0f };
+        
+        RGB rgb1 = YCbCrToRGB(srcColor);
+
+
         if(_isColorEqual(srcColor, destColor))
         {
             found = true;
             break;
         }
-
+        
         pYCursor += yStep;
-        pCbCrCursor += cbcrStep;        
+        pCbCrCursor += cbcrStep;
     }
-
+    
     VirtualMouseData mouseData;
     mouseData.success = true;
     mouseData.screenX = -2.0f;
     mouseData.screenY = -3.0f;
     mouseData.size = -4.0f;
-
+    
     if(found)
     {
         /// Convert index to row/column
@@ -1186,22 +1201,22 @@ VirtualMouseData _calculateData(const VideoPixelBuffer& videoPixelBuffer)
         
         int row = nRealIndex / yWidth;
         int column = nRealIndex % yWidth;
-
+        
         /// Flood fill to find all points, store the minX, maxX, minY, maxY
-
-
+        
+        
         /// Find center
-
-
+        
+        
     }
-
+    
     return mouseData;
 }
 
 extern "C" VirtualMouseData _GetVirtualMouseData (void* nativeSession)
 {
     UnityARSession* session = (__bridge UnityARSession*)nativeSession;
-        
+    
     VirtualMouseData data = _calculateData(session->_videoPixelBuffer);
     return data;
 }
@@ -1214,7 +1229,7 @@ extern "C" UnityARTextureHandles GetVideoTextureHandles()
     UnityARTextureHandles handles;
     handles.textureY = (__bridge_retained void*)s_CapturedImageTextureY;
     handles.textureCbCr = (__bridge_retained void*)s_CapturedImageTextureCbCr;
-
+    
     return handles;
 }
 
@@ -1272,3 +1287,4 @@ extern "C" void GetBlendShapesInfo(void* ptrDictionary, void (*visitorFn)(const 
     }
 #endif
 }
+
