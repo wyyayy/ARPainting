@@ -1094,7 +1094,7 @@ struct YCbCr
     float cr;
 };
 
-struct RGB YCbCrToRGB(struct YCbCr ycbcr)
+struct RGB YCbCrToRGB(struct YCbCr ycbcr)  
 {
 	// float4(1.0, +0.0000, +1.4020, -0.7010),
 	// float4(1.0, -0.3441, -0.7141, +0.5291),
