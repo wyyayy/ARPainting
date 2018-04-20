@@ -1070,6 +1070,9 @@ extern "C" struct VirtualMouseData
 
 #define COLOR_THRETHOD  10;
 
+static float Min(float a, float b) { return a <= b ? a : b; }
+static float Max(float a, float b) { return a >= b ? a : b; }
+
 ///...use a byte array to optimize
 std::set<unsigned int> _visitedPts;
 
@@ -1078,62 +1081,67 @@ struct RGB
 //    unsigned char R;
 //    unsigned char G;
 //    unsigned char B;
-    int R;
-    int G;
-    int B;
+    int r;
+    int g;
+    int b;
 
 };
 
 struct YCbCr
 {
-    float Y;
-    float Cb;
-    float Cr;
+    float y;
+    float cb;
+    float cr;
 };
-
-static float Min(float a, float b) { return a <= b ? a : b; }
-static float Max(float a, float b) { return a >= b ? a : b; }
 
 struct RGB YCbCrToRGB(struct YCbCr ycbcr)
 {
-     /// Need a invert matrix to do RGB2CbCr
-//    const float4x4 ycbcrToRGBTransform = float4x4(
-//                                 float4(1.0, +0.0000, +1.4020, -0.7010),
-//                                 float4(1.0, -0.3441, -0.7141, +0.5291),
-//                                 float4(1.0, +1.7720, +0.0000, -0.8860),
-//                                 float4(0.0, +0.0000, +0.0000, +1.0000)
-    
-    float r = ycbcr.Y                      + 1.4020f * ycbcr.Cr - 0.7010f;
-    float g = ycbcr.Y - 0.3441f * ycbcr.Cb - 0.7141f * ycbcr.Cr + 0.5291f;
-    float b = ycbcr.Y + 1.7720f * ycbcr.Cb - 0.8860f;
-    
-    struct RGB rgb;
-    rgb.R = r * 255;
-    rgb.G = g * 255;
-    rgb.B = b * 255;
-    
-    return rgb;
+	// float4(1.0, +0.0000, +1.4020, -0.7010),
+	// float4(1.0, -0.3441, -0.7141, +0.5291),
+	// float4(1.0, +1.7720, +0.0000, -0.8860),
+	// float4(0.0, +0.0000, +0.0000, +1.0000)
+
+	float r = ycbcr.y + 1.4020f * ycbcr.cr - 0.7010f;
+	float g = ycbcr.y - 0.3441f * ycbcr.cb - 0.7141f * ycbcr.cr + 0.5291f;
+	float b = ycbcr.y + 1.7720f * ycbcr.cb - 0.8860f;
+
+	struct RGB rgb;
+	rgb.r = r * 255;
+	rgb.g = g * 255;
+	rgb.b = b * 255;
+
+	return rgb;
 }
 
 struct YCbCr RGBToYCbCr(struct RGB rgb)
 {
-    float fr = (float)rgb.R / 255;
-    float fg = (float)rgb.G / 255;
-    float fb = (float)rgb.B / 255;
-    
-    struct YCbCr ycbcr;
-    ycbcr.Y = (float)(0.2989 * fr + 0.5866 * fg + 0.1145 * fb);
-    ycbcr.Cb = (float)(-0.1687 * fr - 0.3313 * fg + 0.5000 * fb);
-    ycbcr.Cr = (float)(0.5000 * fr - 0.4184 * fg - 0.0816 * fb);
-    
-    return ycbcr;
+	float fr = (float)rgb.r / 255;
+	float fg = (float)rgb.g / 255;
+	float fb = (float)rgb.b / 255;
+
+/*
+	0.29899	0.58702	0.11399	0.00000
+	- 0.16873 - 0.33127	0.50001	0.50000
+	0.50001 - 0.41870 - 0.08131	0.50000
+	0.00000	0.00000	0.00000	1.00000
+*/
+
+	struct YCbCr ycbcr;
+	ycbcr.y = (float)(0.29899f * fr + 0.58702f * fg + 0.11399f * fb);
+	ycbcr.cb = (float)(-0.16873f * fr - 0.33127f * fg + 0.50001f * fb + 0.5f);
+	ycbcr.cr = (float)(0.5000 * fr - 0.41870f * fg - 0.08131f * fb + 0.5f);
+
+	return ycbcr;
 }
 
 bool _isColorEqual(const YCbCr& srcColor, const YCbCr& destColor)
 {
-    if( abs(srcColor.Y - destColor.Y) <  0.1f
-       && abs(srcColor.Cb - destColor.Cb) <  0.1f
-       && abs(srcColor.Cr - destColor.Cr) <  0.1f ) return true;
+    if( abs(srcColor.y - destColor.y) <  0.1f
+       && abs(srcColor.cb - destColor.cb) <  0.1f
+       && abs(srcColor.cr - destColor.cr) <  0.1f )
+    {
+        return true;
+    }
     else
     {
         return false;
