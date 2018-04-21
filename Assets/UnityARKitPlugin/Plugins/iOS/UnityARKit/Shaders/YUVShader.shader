@@ -66,7 +66,8 @@ Shader "Unlit/ARCameraShader"
 						float4(0.0, +0.0000, +0.0000, +1.0000)
 					);
 
-                return mul(ycbcrToRGBTransform, ycbcr);
+				float4 color = mul(ycbcrToRGBTransform, ycbcr);
+		                	return color;
 			}
 			ENDCG
 		}

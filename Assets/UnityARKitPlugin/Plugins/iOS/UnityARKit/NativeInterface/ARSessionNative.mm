@@ -14,6 +14,222 @@ struct VideoPixelBuffer
     void* pUVPixelBytes;
 };
 
+
+extern "C" struct VirtualMouseData
+{
+    // VirtualMouseData()
+    // {
+    //     this->success = false;
+    //     this->screenX = -1;
+    //     this->screenY = -1;
+    //     this->size = -1;
+    // }
+    
+    bool success;
+    
+    /// In screen space
+    float screenX;
+    /// In screen space
+    float screenY;
+    /// In screen space
+    float size;
+};
+
+#define BYTE unsigned char
+#define SHORT unsigned short
+
+#define COLOR_THRETHOD  10;
+
+static float Min(float a, float b) { return a <= b ? a : b; }
+static float Max(float a, float b) { return a >= b ? a : b; }
+
+///...use a byte array to optimize
+std::set<unsigned int> _visitedPts;
+
+struct RGB
+{
+    //    unsigned char R;
+    //    unsigned char G;
+    //    unsigned char B;
+    int r;
+    int g;
+    int b;
+    
+};
+
+struct YCbCr
+{
+    float y;
+    float cb;
+    float cr;
+};
+
+struct RGB YCbCrToRGB(struct YCbCr ycbcr)
+{
+    // float4(1.0, +0.0000, +1.4020, -0.7010),
+    // float4(1.0, -0.3441, -0.7141, +0.5291),
+    // float4(1.0, +1.7720, +0.0000, -0.8860),
+    // float4(0.0, +0.0000, +0.0000, +1.0000)
+    
+    float r = ycbcr.y + 0.0000f * ycbcr.cb + 1.4020f * ycbcr.cr - 0.7010f;
+    float g = ycbcr.y - 0.3441f * ycbcr.cb - 0.7141f * ycbcr.cr + 0.5291f;
+    float b = ycbcr.y + 1.7720f * ycbcr.cb + 0.0000f * ycbcr.cr - 0.8860f;
+    
+    struct RGB rgb;
+    rgb.r = r * 255;
+    rgb.g = g * 255;
+    rgb.b = b * 255;
+    
+    return rgb;
+}
+
+struct YCbCr RGBToYCbCr(struct RGB rgb)
+{
+    float fr = (float)rgb.r / 255;
+    float fg = (float)rgb.g / 255;
+    float fb = (float)rgb.b / 255;
+    /*
+     0.29899    0.58702    0.11399    0.00000
+     - 0.16873 - 0.33127    0.50001    0.50000
+     0.50001 - 0.41870 - 0.08131    0.50000
+     0.00000    0.00000    0.00000    1.00000
+     */
+    struct YCbCr ycbcr;
+    ycbcr.y = (float)(0.29899f * fr + 0.58702f * fg + 0.11399f * fb);
+    ycbcr.cb = (float)(-0.16873f * fr - 0.33127f * fg + 0.50001f * fb + 0.5f);
+    ycbcr.cr = (float)(0.5000 * fr - 0.41870f * fg - 0.08131f * fb + 0.5f);
+    
+    return ycbcr;
+}
+
+const float THRETHOD = 0.2f;
+
+bool _isColorEqual(const YCbCr& srcColor, const YCbCr& destColor)
+{
+    if( abs(srcColor.y - destColor.y) <  THRETHOD
+       && abs(srcColor.cb - destColor.cb) <  THRETHOD
+       && abs(srcColor.cr - destColor.cr) <  THRETHOD )
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+VirtualMouseData _calculateData(const VideoPixelBuffer& videoPixelBuffer)
+{
+    int yWidth = videoPixelBuffer.videoWidth;
+    int yHeight = videoPixelBuffer.videoHeight;
+    
+    int cbcrWidth = videoPixelBuffer.videoWidth / 2;
+    int cbcrHeight = videoPixelBuffer.videoHeight / 2;
+    
+    int yStep = 2;
+    int rowPtCount = yWidth / yStep;
+    int columnPtCount = yHeight / yStep;
+    
+    int cbcrStep = yStep / 2;
+    
+    /// Find first point
+    BYTE* pYCursor = (BYTE*)videoPixelBuffer.pYPixelBytes;
+    SHORT* pCbCrCursor = (SHORT*)videoPixelBuffer.pUVPixelBytes;
+    
+    int totalSteps = ((yWidth * yHeight) / yStep) / 2;
+    
+    RGB rgb = {220, 44, 44};
+    YCbCr destColor = RGBToYCbCr(rgb);
+    
+    YCbCr replaceColor = RGBToYCbCr({0, 255, 0});
+    
+    int index = 0;
+    bool found = false;
+    
+    for(int row = 0; row < cbcrHeight; row++)
+    {
+        for(int column = 0; column < cbcrWidth; column++)
+        {
+            int yIndex = (row >> 1) * yWidth + (column >> 1);
+            int y = pYCursor[yIndex];
+            
+            int cbcrIndex = row * cbcrWidth + column;
+            int cbcr = pCbCrCursor[cbcrIndex];
+            
+            int cr = (cbcr & 0xFF00) >> 8;
+            int cb = cbcr & 0x00FF;
+            
+            YCbCr srcColor = { y /255.0f, cb / 255.0f, cr / 255.0f };
+            
+            RGB rgb1 = YCbCrToRGB(srcColor);
+            
+            if(_isColorEqual(srcColor, destColor))
+            {
+                //printf("x: %d, y: %d", column, row);
+                found = true;
+                int replaceY = replaceColor.y * 255;
+                pYCursor[yIndex] = replaceY;
+                
+                int cr = (int(replaceColor.cr * 255)) << 8;
+                int cbcr = (replaceColor.cb * 255) || cr;
+                pCbCrCursor[cbcrIndex] = cbcr;
+                //YCbCr temp = RGBToYCbCr(rgb1);
+                
+                //break;
+            }
+            
+        }
+    }
+    
+    //    for( ; index < totalSteps; ++index)
+    //    {
+    //        int y = pYCursor[index];
+    //        int cbcr = pCbCrCursor[index];
+    //        int cr = (cbcr & 0xFF00) >> 8;
+    //        int cb = cbcr & 0x00FF;
+    //
+    //        YCbCr srcColor = { y /255.0f, cb / 255.0f, cr / 255.0f };
+    //
+    //        RGB rgb1 = YCbCrToRGB(srcColor);
+    //
+    //        if(_isColorEqual(srcColor, destColor))
+    //        {
+    //            found = true;
+    //            break;
+    //        }
+    //
+    //        pYCursor += yStep;
+    //        pCbCrCursor += cbcrStep;
+    //    }
+    //
+    VirtualMouseData mouseData;
+    mouseData.success = true;
+    mouseData.screenX = -2.0f;
+    mouseData.screenY = -3.0f;
+    mouseData.size = -4.0f;
+    
+    if(found)
+    {
+        /// Convert index to row/column
+        int nRealIndex = index * yStep;
+        
+        int row = nRealIndex / yWidth;
+        int column = nRealIndex % yWidth;
+        
+        /// Flood fill to find all points, store the minX, maxX, minY, maxY
+        
+        
+        /// Find center
+        
+        
+    }
+    
+    return mouseData;
+}
+
+#undef BYTE
+#undef SHORT
+
 /// ---
 typedef struct
 {
@@ -703,6 +919,8 @@ static CGAffineTransform s_CurAffineTransform;
     memcpy(_videoPixelBuffer.pUVPixelBytes, baseAddress, numBytes);
     
     CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
+    
+    _calculateData(_videoPixelBuffer);
 }
 
 - (void)session:(ARSession *)session didFailWithError:(NSError *)error
@@ -1034,6 +1252,14 @@ extern "C" UnityARHitTestResult GetLastHitTestResult(int index)
     return unityResult;
 }
 
+extern "C" VirtualMouseData _GetVirtualMouseData (void* nativeSession)
+{
+    UnityARSession* session = (__bridge UnityARSession*)nativeSession;
+    
+    VirtualMouseData data = _calculateData(session->_videoPixelBuffer);
+    return data;
+}
+
 // Must match ARHitTestResult in ARHitTestResult.cs
 extern "C" void _SetVideoPixelBuffer (void* nativeSession, int videoWidth, int videoHeight, void* pYPixelBytes, void *pUVPixelBytes)
 {
@@ -1044,193 +1270,6 @@ extern "C" void _SetVideoPixelBuffer (void* nativeSession, int videoWidth, int v
     session->_videoPixelBuffer.pYPixelBytes = pYPixelBytes;
     session->_videoPixelBuffer.pUVPixelBytes = pUVPixelBytes;
 }
-
-extern "C" struct VirtualMouseData
-{
-    // VirtualMouseData()
-    // {
-    //     this->success = false;
-    //     this->screenX = -1;
-    //     this->screenY = -1;
-    //     this->size = -1;
-    // }
-    
-    bool success;
-    
-    /// In screen space
-    float screenX;
-    /// In screen space
-    float screenY;
-    /// In screen space
-    float size;
-};
-
-#define BYTE unsigned char
-#define SHORT unsigned short
-
-#define COLOR_THRETHOD  10;
-
-static float Min(float a, float b) { return a <= b ? a : b; }
-static float Max(float a, float b) { return a >= b ? a : b; }
-
-///...use a byte array to optimize
-std::set<unsigned int> _visitedPts;
-
-struct RGB
-{
-//    unsigned char R;
-//    unsigned char G;
-//    unsigned char B;
-    int r;
-    int g;
-    int b;
-
-};
-
-struct YCbCr
-{
-    float y;
-    float cb;
-    float cr;
-};
-
-struct RGB YCbCrToRGB(struct YCbCr ycbcr)  
-{
-	// float4(1.0, +0.0000, +1.4020, -0.7010),
-	// float4(1.0, -0.3441, -0.7141, +0.5291),
-	// float4(1.0, +1.7720, +0.0000, -0.8860),
-	// float4(0.0, +0.0000, +0.0000, +1.0000)
-
-	float r = ycbcr.y + 1.4020f * ycbcr.cr - 0.7010f;
-	float g = ycbcr.y - 0.3441f * ycbcr.cb - 0.7141f * ycbcr.cr + 0.5291f;
-	float b = ycbcr.y + 1.7720f * ycbcr.cb - 0.8860f;
-
-	struct RGB rgb;
-	rgb.r = r * 255;
-	rgb.g = g * 255;
-	rgb.b = b * 255;
-
-	return rgb;
-}
-
-struct YCbCr RGBToYCbCr(struct RGB rgb)
-{
-	float fr = (float)rgb.r / 255;
-	float fg = (float)rgb.g / 255;
-	float fb = (float)rgb.b / 255;
-
-/*
-	0.29899	0.58702	0.11399	0.00000
-	- 0.16873 - 0.33127	0.50001	0.50000
-	0.50001 - 0.41870 - 0.08131	0.50000
-	0.00000	0.00000	0.00000	1.00000
-*/
-
-	struct YCbCr ycbcr;
-	ycbcr.y = (float)(0.29899f * fr + 0.58702f * fg + 0.11399f * fb);
-	ycbcr.cb = (float)(-0.16873f * fr - 0.33127f * fg + 0.50001f * fb + 0.5f);
-	ycbcr.cr = (float)(0.5000 * fr - 0.41870f * fg - 0.08131f * fb + 0.5f);
-
-	return ycbcr;
-}
-
-bool _isColorEqual(const YCbCr& srcColor, const YCbCr& destColor)
-{
-    if( abs(srcColor.y - destColor.y) <  0.1f
-       && abs(srcColor.cb - destColor.cb) <  0.1f
-       && abs(srcColor.cr - destColor.cr) <  0.1f )
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
-}
-
-VirtualMouseData _calculateData(const VideoPixelBuffer& videoPixelBuffer)
-{
-    int yWidth = videoPixelBuffer.videoWidth;
-    int yHeight = videoPixelBuffer.videoHeight;
-    
-    int cbcrWidth = videoPixelBuffer.videoWidth / 2;
-    int cbcrHeight = videoPixelBuffer.videoHeight / 2;
-    
-    int yStep = 6;
-    int rowPtCount = yWidth / yStep;
-    int columnPtCount = yHeight / yStep;
-    
-    int cbcrStep = yStep / 2;
-    
-    /// Find first point
-    BYTE* pYCursor = (BYTE*)videoPixelBuffer.pYPixelBytes;
-    SHORT* pCbCrCursor = (SHORT*)videoPixelBuffer.pUVPixelBytes;
-    
-    int totalSteps = (yWidth * yHeight) / yStep;
-    
-    RGB rgb = {255, 0, 0};
-    YCbCr destColor = RGBToYCbCr(rgb);
-    
-    int index = 0;
-    bool found = false;
-    
-    for( ; index < totalSteps; ++index)
-    {
-        int y = pYCursor[index];
-        int cbcr = pCbCrCursor[index];
-        int cr = (cbcr & 0xFF00) >> 8; /// ???
-        int cb = cbcr & 0x00FF;
-        
-        YCbCr srcColor = { y /255.0f, cb / 255.0f, cr / 255.0f };
-        
-        RGB rgb1 = YCbCrToRGB(srcColor);
-
-
-        if(_isColorEqual(srcColor, destColor))
-        {
-            found = true;
-            break;
-        }
-        
-        pYCursor += yStep;
-        pCbCrCursor += cbcrStep;
-    }
-    
-    VirtualMouseData mouseData;
-    mouseData.success = true;
-    mouseData.screenX = -2.0f;
-    mouseData.screenY = -3.0f;
-    mouseData.size = -4.0f;
-    
-    if(found)
-    {
-        /// Convert index to row/column
-        int nRealIndex = index * yStep;
-        
-        int row = nRealIndex / yWidth;
-        int column = nRealIndex % yWidth;
-        
-        /// Flood fill to find all points, store the minX, maxX, minY, maxY
-        
-        
-        /// Find center
-        
-        
-    }
-    
-    return mouseData;
-}
-
-extern "C" VirtualMouseData _GetVirtualMouseData (void* nativeSession)
-{
-    UnityARSession* session = (__bridge UnityARSession*)nativeSession;
-    
-    VirtualMouseData data = _calculateData(session->_videoPixelBuffer);
-    return data;
-}
-
-#undef BYTE
-#undef SHORT
 
 extern "C" UnityARTextureHandles GetVideoTextureHandles()
 {
