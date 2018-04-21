@@ -142,6 +142,8 @@ VirtualMouseData _calculateData(const VideoPixelBuffer& videoPixelBuffer)
     YCbCr destColor = RGBToYCbCr(rgb);
     
     YCbCr replaceColor = RGBToYCbCr({0, 0, 255});
+    int replaceY = replaceColor.y * 255;
+    int replaceCbCr = (replaceColor.cb * 255) ||  (int(replaceColor.cr * 255)) << 8;
     
     int index = 0;
     bool found = false;
@@ -161,18 +163,15 @@ VirtualMouseData _calculateData(const VideoPixelBuffer& videoPixelBuffer)
             
             YCbCr srcColor = { y /255.0f, cb / 255.0f, cr / 255.0f };
             
-            RGB rgb1 = YCbCrToRGB(srcColor);
+            ///RGB rgb1 = YCbCrToRGB(srcColor);
             
             if(_isColorEqual(srcColor, destColor))
             {
                 //printf("x: %d, y: %d", column, row);
                 found = true;
-                int replaceY = replaceColor.y * 255;
-                pYCursor[yIndex] = replaceY;
                 
-                int cr = (int(replaceColor.cr * 255)) << 8;
-                int cbcr = (replaceColor.cb * 255) || cr;
-                pCbCrCursor[cbcrIndex] = cbcr;
+                pYCursor[yIndex] = replaceY;
+                pCbCrCursor[cbcrIndex] = replaceCbCr;
                 //YCbCr temp = RGBToYCbCr(rgb1);
                 
                 //break;
