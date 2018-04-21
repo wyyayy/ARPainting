@@ -138,10 +138,10 @@ VirtualMouseData _calculateData(const VideoPixelBuffer& videoPixelBuffer)
     
     int totalSteps = ((yWidth * yHeight) / yStep) / 2;
     
-    RGB rgb = {230, 44, 44};
+    RGB rgb = {235, 44, 44};
     YCbCr destColor = RGBToYCbCr(rgb);
     
-    YCbCr replaceColor = RGBToYCbCr({0, 255, 0});
+    YCbCr replaceColor = RGBToYCbCr({0, 0, 255});
     
     int index = 0;
     bool found = false;
