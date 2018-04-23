@@ -43,9 +43,6 @@ extern "C" struct VirtualMouseData
 static float Min(float a, float b) { return a <= b ? a : b; }
 static float Max(float a, float b) { return a >= b ? a : b; }
 
-///...use a byte array to optimize
-std::set<unsigned int> _visitedPts;
-
 struct RGB
 {
     //    unsigned char R;
@@ -118,6 +115,48 @@ bool _isColorEqual(const YCbCr& srcColor, const YCbCr& destColor)
     }
 }
 
+class Ellipse
+{
+public:
+        
+public:
+    Ellipse()
+    {
+
+    }
+}
+
+/// Images bettween frames are linnear, so we can decuce next-frame's info
+/// with pre-frame (dead reckoning). 
+/// With this method we greatly increase performance.
+class ShapeRecognizer
+{
+protected:
+    int _row;
+    int _column;
+
+    const VideoPixelBuffer& _videoPixelBuffer;
+
+    ///...use a byte array (convert row-column into a interger to index byteArray) to optimize
+    std::set<unsigned int> _visitedPts;
+
+    Ellipse _shape;
+
+public:    
+    ShapeRecognizer(int row, int column, const VideoPixelBuffer& videoPixelBuffer, YCbCr destColor)
+    {
+        _row = row;
+        _column = column;
+
+    }
+
+    Ellipse FindShape()
+    {
+        return _shape
+    }
+
+}
+
 VirtualMouseData _calculateData(const VideoPixelBuffer& videoPixelBuffer)
 {
     int yWidth = videoPixelBuffer.videoWidth;
@@ -142,11 +181,13 @@ VirtualMouseData _calculateData(const VideoPixelBuffer& videoPixelBuffer)
     YCbCr destColor = RGBToYCbCr(rgb);
     
     YCbCr replaceColor = RGBToYCbCr({0, 0, 255});
-    int replaceY = replaceColor.y * 255;
-    int replaceCbCr = (replaceColor.cb * 255) ||  (int(replaceColor.cr * 255)) << 8;
+    BYTE replaceY = BYTE(replaceColor.y * 255);
+    SHORT replaceCbCr = SHORT( (int(replaceColor.cb * 255)) || ( (int(replaceColor.cr * 255)) << 8 ) );
     
     int index = 0;
     bool found = false;
+    int targetRow = -1;
+    int targetColumn = -1;
     
     for(int row = 0; row < cbcrHeight; row++)
     {
@@ -169,60 +210,38 @@ VirtualMouseData _calculateData(const VideoPixelBuffer& videoPixelBuffer)
             {
                 //printf("x: %d, y: %d", column, row);
                 found = true;
+
+                targetRow = row;
+                targetColumn = column;
                 
                 pYCursor[yIndex] = replaceY;
                 pCbCrCursor[cbcrIndex] = replaceCbCr;
+
                 //YCbCr temp = RGBToYCbCr(rgb1);
-                
                 //break;
             }
             
         }
     }
-    
-    //    for( ; index < totalSteps; ++index)
-    //    {
-    //        int y = pYCursor[index];
-    //        int cbcr = pCbCrCursor[index];
-    //        int cr = (cbcr & 0xFF00) >> 8;
-    //        int cb = cbcr & 0x00FF;
-    //
-    //        YCbCr srcColor = { y /255.0f, cb / 255.0f, cr / 255.0f };
-    //
-    //        RGB rgb1 = YCbCrToRGB(srcColor);
-    //
-    //        if(_isColorEqual(srcColor, destColor))
-    //        {
-    //            found = true;
-    //            break;
-    //        }
-    //
-    //        pYCursor += yStep;
-    //        pCbCrCursor += cbcrStep;
-    //    }
-    //
-    VirtualMouseData mouseData;
-    mouseData.success = true;
-    mouseData.screenX = -2.0f;
-    mouseData.screenY = -3.0f;
-    mouseData.size = -4.0f;
-    
+         
     if(found)
-    {
-        /// Convert index to row/column
-        int nRealIndex = index * yStep;
-        
-        int row = nRealIndex / yWidth;
-        int column = nRealIndex % yWidth;
-        
+    {        
         /// Flood fill to find all points, store the minX, maxX, minY, maxY
-        
+
+
+
         
         /// Find center
         
         
     }
     
+    VirtualMouseData mouseData;
+    mouseData.success = true;
+    mouseData.screenX = -2.0f;
+    mouseData.screenY = -3.0f;
+    mouseData.size = -4.0f;
+
     return mouseData;
 }
 
@@ -1334,3 +1353,25 @@ extern "C" void GetBlendShapesInfo(void* ptrDictionary, void (*visitorFn)(const 
 #endif
 }
 
+
+   //    for( ; index < totalSteps; ++index)
+    //    {
+    //        int y = pYCursor[index];
+    //        int cbcr = pCbCrCursor[index];
+    //        int cr = (cbcr & 0xFF00) >> 8;
+    //        int cb = cbcr & 0x00FF;
+    //
+    //        YCbCr srcColor = { y /255.0f, cb / 255.0f, cr / 255.0f };
+    //
+    //        RGB rgb1 = YCbCrToRGB(srcColor);
+    //
+    //        if(_isColorEqual(srcColor, destColor))
+    //        {
+    //            found = true;
+    //            break;
+    //        }
+    //
+    //        pYCursor += yStep;
+    //        pCbCrCursor += cbcrStep;
+    //    }
+    //
