@@ -99,13 +99,14 @@ struct YCbCr RGBToYCbCr(struct RGB rgb)
     return ycbcr;
 }
 
-const float THRETHOD = 0.2f;
+const float THRETHOD_Y = 0.3f;
+const float THRETHOD_CBCR = 0.15f;
 
 bool _isColorEqual(const YCbCr& srcColor, const YCbCr& destColor)
 {
-    if( abs(srcColor.y - destColor.y) <  THRETHOD
-       && abs(srcColor.cb - destColor.cb) <  THRETHOD
-       && abs(srcColor.cr - destColor.cr) <  THRETHOD )
+    if( abs(srcColor.y - destColor.y) <  THRETHOD_Y
+       && abs(srcColor.cb - destColor.cb) <  THRETHOD_CBCR
+       && abs(srcColor.cr - destColor.cr) <  THRETHOD_CBCR )
     {
         return true;
     }
@@ -118,44 +119,46 @@ bool _isColorEqual(const YCbCr& srcColor, const YCbCr& destColor)
 class Ellipse
 {
 public:
-        
+    
 public:
     Ellipse()
     {
-
+        
     }
-}
+};
 
 /// Images bettween frames are linnear, so we can decuce next-frame's info
-/// with pre-frame (dead reckoning). 
+/// with pre-frame (dead reckoning).
 /// With this method we greatly increase performance.
+/// When find the shape, we can change the threthod dynamically to find the full shape.
 class ShapeRecognizer
 {
 protected:
     int _row;
     int _column;
-
+    
     const VideoPixelBuffer& _videoPixelBuffer;
-
+    
     ///...use a byte array (convert row-column into a interger to index byteArray) to optimize
     std::set<unsigned int> _visitedPts;
-
+    
     Ellipse _shape;
-
-public:    
+    
+public:
     ShapeRecognizer(int row, int column, const VideoPixelBuffer& videoPixelBuffer, YCbCr destColor)
+    : _videoPixelBuffer(videoPixelBuffer)
     {
         _row = row;
         _column = column;
-
+        
     }
-
+    
     Ellipse FindShape()
     {
-        return _shape
+        return _shape;
     }
-
-}
+    
+};
 
 VirtualMouseData _calculateData(const VideoPixelBuffer& videoPixelBuffer)
 {
@@ -177,14 +180,13 @@ VirtualMouseData _calculateData(const VideoPixelBuffer& videoPixelBuffer)
     
     int totalSteps = ((yWidth * yHeight) / yStep) / 2;
     
-    RGB rgb = {235, 44, 44};
+    RGB rgb = {250, 0, 0};
     YCbCr destColor = RGBToYCbCr(rgb);
     
     YCbCr replaceColor = RGBToYCbCr({0, 0, 255});
-    BYTE replaceY = BYTE(replaceColor.y * 255);
-    SHORT replaceCbCr = SHORT( (int(replaceColor.cb * 255)) || ( (int(replaceColor.cr * 255)) << 8 ) );
+    BYTE replaceY = (BYTE)(replaceColor.y * 255);
+    SHORT replaceCbCr = (SHORT)( (int(replaceColor.cb * 255.0f)) || ( (int(replaceColor.cr * 255.0f)) << 8 ) );
     
-    int index = 0;
     bool found = false;
     int targetRow = -1;
     int targetColumn = -1;
@@ -193,7 +195,7 @@ VirtualMouseData _calculateData(const VideoPixelBuffer& videoPixelBuffer)
     {
         for(int column = 0; column < cbcrWidth; column++)
         {
-            int yIndex = (row >> 1) * yWidth + (column >> 1);
+            int yIndex = (row << 1) * yWidth + (column << 1);
             int y = pYCursor[yIndex];
             
             int cbcrIndex = row * cbcrWidth + column;
@@ -210,26 +212,25 @@ VirtualMouseData _calculateData(const VideoPixelBuffer& videoPixelBuffer)
             {
                 //printf("x: %d, y: %d", column, row);
                 found = true;
-
+                
                 targetRow = row;
                 targetColumn = column;
                 
                 pYCursor[yIndex] = replaceY;
                 pCbCrCursor[cbcrIndex] = replaceCbCr;
-
+                
                 //YCbCr temp = RGBToYCbCr(rgb1);
                 //break;
             }
             
         }
     }
-         
+    
     if(found)
-    {        
+    {
         /// Flood fill to find all points, store the minX, maxX, minY, maxY
-
-
-
+        
+        
         
         /// Find center
         
@@ -241,7 +242,7 @@ VirtualMouseData _calculateData(const VideoPixelBuffer& videoPixelBuffer)
     mouseData.screenX = -2.0f;
     mouseData.screenY = -3.0f;
     mouseData.size = -4.0f;
-
+    
     return mouseData;
 }
 
@@ -1354,24 +1355,24 @@ extern "C" void GetBlendShapesInfo(void* ptrDictionary, void (*visitorFn)(const 
 }
 
 
-   //    for( ; index < totalSteps; ++index)
-    //    {
-    //        int y = pYCursor[index];
-    //        int cbcr = pCbCrCursor[index];
-    //        int cr = (cbcr & 0xFF00) >> 8;
-    //        int cb = cbcr & 0x00FF;
-    //
-    //        YCbCr srcColor = { y /255.0f, cb / 255.0f, cr / 255.0f };
-    //
-    //        RGB rgb1 = YCbCrToRGB(srcColor);
-    //
-    //        if(_isColorEqual(srcColor, destColor))
-    //        {
-    //            found = true;
-    //            break;
-    //        }
-    //
-    //        pYCursor += yStep;
-    //        pCbCrCursor += cbcrStep;
-    //    }
-    //
+//    for( ; index < totalSteps; ++index)
+//    {
+//        int y = pYCursor[index];
+//        int cbcr = pCbCrCursor[index];
+//        int cr = (cbcr & 0xFF00) >> 8;
+//        int cb = cbcr & 0x00FF;
+//
+//        YCbCr srcColor = { y /255.0f, cb / 255.0f, cr / 255.0f };
+//
+//        RGB rgb1 = YCbCrToRGB(srcColor);
+//
+//        if(_isColorEqual(srcColor, destColor))
+//        {
+//            found = true;
+//            break;
+//        }
+//
+//        pYCursor += yStep;
+//        pCbCrCursor += cbcrStep;
+//    }
+//
