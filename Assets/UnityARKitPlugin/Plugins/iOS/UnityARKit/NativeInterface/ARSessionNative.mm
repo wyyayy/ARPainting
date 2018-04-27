@@ -116,14 +116,22 @@ bool _isColorEqual(const YCbCr& srcColor, const YCbCr& destColor)
     }
 }
 
+class Shape
+{
+    
+}
+
 class Ellipse
 {
 public:
-    
+    float x;
+    float y;
+
 public:
     Ellipse()
     {
-        
+        x = 0;
+        y = 0;
     }
 };
 
@@ -140,9 +148,17 @@ protected:
     const VideoPixelBuffer& _videoPixelBuffer;
     
     ///...use a byte array (convert row-column into a interger to index byteArray) to optimize
+    /// Key = row << 16 || column << 16
     std::set<unsigned int> _visitedPts;
     
     Ellipse _shape;
+    YCbCr _destColor;
+    
+    /// Info
+    float _minYPt;
+    float _maxYPt;
+    float _minXPt;
+    float _maxXPt;
     
 public:
     ShapeRecognizer(int row, int column, const VideoPixelBuffer& videoPixelBuffer, YCbCr destColor)
@@ -151,13 +167,55 @@ public:
         _row = row;
         _column = column;
         
+        _destColor = destColor;
+        
     }
     
     Ellipse FindShape()
     {
+        _visitedPts.clear();
+        
+        _searchImage(_row, _column);
+        
         return _shape;
     }
     
+    void _searchImage(int row, int column)
+    {
+        int key = row << 16 + column;
+        
+        if(_visitedPts.count(key) > 0) return;
+        
+        BYTE* pYCursor = (BYTE*)_videoPixelBuffer.pYPixelBytes;
+        SHORT* pCbCrCursor = (SHORT*)_videoPixelBuffer.pUVPixelBytes;
+        
+        int yIndex = (row << 1) * yWidth + (column << 1);
+        int y = pYCursor[yIndex];
+        
+        int cbcrIndex = row * cbcrWidth + column;
+        int cbcr = pCbCrCursor[cbcrIndex];
+        
+        int cr = (cbcr & 0xFF00) >> 8;
+        int cb = cbcr & 0x00FF;
+        
+        YCbCr srcColor = { y /255.0f, cb / 255.0f, cr / 255.0f };
+        
+        ///RGB rgb1 = YCbCrToRGB(srcColor);
+        
+        if(_isColorEqual(srcColor, _destColor))
+        {
+            _visitedPts.insert(key);
+        }
+        
+        /// Search neighbour pixels
+        if(row - 1 >= 0) _searchImage(row - 1, column);
+        
+        _searchImage(row + 1, column);
+        _searchImage(row, column - 1);
+        _searchImage(row, column + 1);
+        
+    }
+
 };
 
 VirtualMouseData _calculateData(const VideoPixelBuffer& videoPixelBuffer)
@@ -220,7 +278,7 @@ VirtualMouseData _calculateData(const VideoPixelBuffer& videoPixelBuffer)
                 pCbCrCursor[cbcrIndex] = replaceCbCr;
                 
                 //YCbCr temp = RGBToYCbCr(rgb1);
-                //break;
+                break;
             }
             
         }
@@ -229,7 +287,8 @@ VirtualMouseData _calculateData(const VideoPixelBuffer& videoPixelBuffer)
     if(found)
     {
         /// Flood fill to find all points, store the minX, maxX, minY, maxY
-        
+        ShapeRecognizer shapeRecognizer(targetRow, targetColumn, videoPixelBuffer, destColor);
+        Ellipse shape = shapeRecognizer.FindShape();
         
         
         /// Find center
