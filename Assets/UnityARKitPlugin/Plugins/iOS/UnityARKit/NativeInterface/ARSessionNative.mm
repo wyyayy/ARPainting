@@ -119,7 +119,7 @@ bool _isColorEqual(const YCbCr& srcColor, const YCbCr& destColor)
 class Shape
 {
     
-}
+};
 
 class Ellipse
 {
@@ -182,6 +182,7 @@ public:
     
     void _searchImage(int row, int column)
     {
+        /*
         int key = row << 16 + column;
         
         if(_visitedPts.count(key) > 0) return;
@@ -213,7 +214,7 @@ public:
         _searchImage(row + 1, column);
         _searchImage(row, column - 1);
         _searchImage(row, column + 1);
-        
+        */
     }
 
 };
@@ -249,6 +250,11 @@ VirtualMouseData _calculateData(const VideoPixelBuffer& videoPixelBuffer)
     int targetRow = -1;
     int targetColumn = -1;
     
+    float minYPt = 999999;
+    float maxYPt = 0;
+    float minXPt = 999999;
+    float maxXPt = 0;
+    
     for(int row = 0; row < cbcrHeight; row++)
     {
         for(int column = 0; column < cbcrWidth; column++)
@@ -277,8 +283,13 @@ VirtualMouseData _calculateData(const VideoPixelBuffer& videoPixelBuffer)
                 pYCursor[yIndex] = replaceY;
                 pCbCrCursor[cbcrIndex] = replaceCbCr;
                 
+                if(row < minYPt) minYPt = row;
+                if(row > maxYPt) maxYPt = row;
+                if(column < minXPt) minXPt = column;
+                if(column > maxXPt) maxXPt = column;
+                
                 //YCbCr temp = RGBToYCbCr(rgb1);
-                break;
+                //break;
             }
             
         }
@@ -286,23 +297,35 @@ VirtualMouseData _calculateData(const VideoPixelBuffer& videoPixelBuffer)
     
     if(found)
     {
-        /// Flood fill to find all points, store the minX, maxX, minY, maxY
-        ShapeRecognizer shapeRecognizer(targetRow, targetColumn, videoPixelBuffer, destColor);
-        Ellipse shape = shapeRecognizer.FindShape();
+        ///...ToDo: Flood fill to find all points, store the minX, maxX, minY, maxY
+        //ShapeRecognizer shapeRecognizer(targetRow, targetColumn, videoPixelBuffer, destColor);
+        //Ellipse shape = shapeRecognizer.FindShape();
         
-        
+
         /// Find center
+        float deltaX = maxXPt - minXPt;
+        float deltaY = maxYPt - minYPt;
+        float radius = sqrt(deltaX * deltaX + deltaY * deltaY);
+
+        VirtualMouseData mouseData;
+        mouseData.success = true;
+        mouseData.screenX = minXPt + maxXPt;
+        mouseData.screenY = minYPt + maxYPt;
+        mouseData.size = radius * 2;
         
-        
+        return mouseData;
     }
-    
-    VirtualMouseData mouseData;
-    mouseData.success = true;
-    mouseData.screenX = -2.0f;
-    mouseData.screenY = -3.0f;
-    mouseData.size = -4.0f;
-    
-    return mouseData;
+    else
+    {
+        VirtualMouseData mouseData;
+        mouseData.success = true;
+        mouseData.screenX = -2.0f;
+        mouseData.screenY = -3.0f;
+        mouseData.size = -4.0f;
+        
+        return mouseData;
+    }
+
 }
 
 #undef BYTE
@@ -998,7 +1021,7 @@ static CGAffineTransform s_CurAffineTransform;
     
     CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
     
-    _calculateData(_videoPixelBuffer);
+    //_calculateData(_videoPixelBuffer);
 }
 
 - (void)session:(ARSession *)session didFailWithError:(NSError *)error

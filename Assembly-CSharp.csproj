@@ -274,6 +274,7 @@
      <Compile Include="Assets\SDKs\Reporter\TestReporter.cs" />
      <Compile Include="Assets\StickClient.cs" />
      <Compile Include="Assets\TestCursorDetection.cs" />
+     <Compile Include="Assets\TestMousePosition.cs" />
      <Compile Include="Assets\TestUDP.cs" />
      <Compile Include="Assets\UnityARKitPlugin\ARKitRemote\ARKitFaceTrackingRemoteConnection.cs" />
      <Compile Include="Assets\UnityARKitPlugin\ARKitRemote\ARKitRemoteConnection.cs" />

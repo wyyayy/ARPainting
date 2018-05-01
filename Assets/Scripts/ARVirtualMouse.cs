@@ -8,6 +8,8 @@ namespace ARSDK
 {
     public class ARVirtualMouse : MonoBehaviour
     {
+        public Transform DebugModel;
+
         protected UnityARSessionNativeInterface _session;
 		
         // Use this for initialization
@@ -21,8 +23,21 @@ namespace ARSDK
         {
 			if(Input.GetMouseButtonDown(0))
 			{
-				VirtualMouseData data = _session.GetVirtualMouseData();
-				Debug.Log("JoyStickData, error:" + data.success + ", size: " + data.size + ", screenX: " + data.screenX + ", screenY: " + data.screenY);				
+                Debug.Log("MousePos: " + Input.mousePosition);
+
+				VirtualMouseData mouseData = _session.GetVirtualMouseData();
+                var screenPos = new Vector3(Screen.width - mouseData.screenY, Screen.height - mouseData.screenX, 0);
+
+				Debug.Log("ScreenPos: " + screenPos);
+                Debug.Log("JoyStickData, error:" + mouseData.success + ", size: " + mouseData.size + ", screenX: " + mouseData.screenX + ", screenY: " + mouseData.screenY);
+
+                if(DebugModel != null)
+                {
+                    var ray = Camera.current.ScreenPointToRay(screenPos);
+                    float distance = (mouseData.size / 17.0f) / 100f;
+                    var pos = ray.GetPoint(distance);
+                    DebugModel.position = pos;
+                }
 			}
         }
     }
