@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+using ARSDK;
+
 public class AppMgr : MonoBehaviour
 {
 	protected UdpReceiver _udpReceiver;
+    protected ARVirtualMouse _arVirtualMouse;
 
     // Use this for initialization
     void Start()
@@ -21,11 +24,15 @@ public class AppMgr : MonoBehaviour
 			Debug.LogWarning("Received Msg: " + msg);
 		};
 
+        this.Bind(out _arVirtualMouse);
     }
 
     // Update is called once per frame
     void Update()
     {
-		
+		if(Input.GetMouseButtonDown(0))
+        {
+            _arVirtualMouse.enabled = !_arVirtualMouse.enabled;
+        }
     }
 }

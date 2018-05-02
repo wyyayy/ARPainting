@@ -209,6 +209,7 @@ GameObject:
   - component: {fileID: 294771743}
   - component: {fileID: 294771742}
   - component: {fileID: 294771744}
+  - component: {fileID: 294771745}
   m_Layer: 0
   m_Name: AppMgr
   m_TagString: Untagged
@@ -251,6 +252,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2f9266afd9ca784ca7ea3f237deb441, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &294771745
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 294771741}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 405d21861610e432ca3cd6cf251ecbd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DebugModel: {fileID: 1485438398}
 --- !u!1 &481742511
 GameObject:
   m_ObjectHideFlags: 0
@@ -476,7 +489,6 @@ GameObject:
   - component: {fileID: 1071631967}
   - component: {fileID: 1071631971}
   - component: {fileID: 1071631972}
-  - component: {fileID: 1071631973}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -581,18 +593,6 @@ MonoBehaviour:
   PlaneDetection: 1
   GetPointCloud: 1
   EnableLightEstimation: 1
---- !u!114 &1071631973
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1071631965}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 405d21861610e432ca3cd6cf251ecbd5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  DebugModel: {fileID: 1485438398}
 --- !u!1 &1308259102
 GameObject:
   m_ObjectHideFlags: 0
