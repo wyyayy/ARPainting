@@ -32,7 +32,7 @@ namespace ARSDK
             if (DebugModel != null)
             {
                 var ray = Camera.current.ScreenPointToRay(screenPos);
-                float distance = (100 * 17.0f) / mouseData.size;
+                float distance = (100 * 0.1f) / mouseData.size;
                 var pos = ray.GetPoint(distance);
                 DebugModel.position = pos;
             }
